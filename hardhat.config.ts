@@ -1,8 +1,10 @@
 import * as dotenv from "dotenv";
 import { HardhatUserConfig } from "hardhat/config";
+import "@openzeppelin/hardhat-upgrades"
 import "@nomicfoundation/hardhat-toolbox";
 import "hardhat-gas-reporter";
 import "solidity-docgen";
+import { userConfig } from "hardhat";
 
 // import "./scripts/deploy";
 dotenv.config();
@@ -20,11 +22,12 @@ const config: HardhatUserConfig = {
       },
     },
   },
+  defaultNetwork: "hardhat",
   networks: {
+    hardhat: {},
     goerli: {
       url: process.env.GOERLI_URL !== undefined ? process.env.GOERLI_URL : "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
     sepolia: {
       url: process.env.SEPOLIA_URL !== undefined ? process.env.SEPOLIA_URL : "",
@@ -49,7 +52,6 @@ const config: HardhatUserConfig = {
     apiKey: process.env.ETHERSCAN_API_KEY,
   },
   docgen: {
-    output: 'docs',
     pages: () => 'api.md',
   }
 };
