@@ -16,37 +16,36 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "./interfaces/IERC4906Upgradeable.sol";
 import "./interfaces/IAINFT.sol";
 
-contract AINFT721Upgradeable is   
+/**
+ *@dev Proxy contract for AINFT721
+ *@notice About design pattern, refer to https://github.com/OpenZeppelin/openzeppelin-labs/tree/master/upgradeability_using_inherited_storage
+ */
+contract AINFT721Upgradeable is
     Initializable,
     ERC721Upgradeable,
-    ERC721EnumerableUpgradeable, 
-    ERC721URIStorageUpgradeable, 
-    PausableUpgradeable, 
-    AccessControlUpgradeable, 
-    ERC721BurnableUpgradeable, 
+    ERC721EnumerableUpgradeable,
+    ERC721URIStorageUpgradeable,
+    PausableUpgradeable,
+    AccessControlUpgradeable,
+    ERC721BurnableUpgradeable,
     UUPSUpgradeable,
     IERC4906Upgradeable,
     IAINFT
-    {
-
+{
     using CountersUpgradeable for CountersUpgradeable.Counter;
     using Strings for uint256;
 
     struct MetadataContainer {
-        bytes32 current;
-        bytes32 prev;
-        bytes32 origin;
         address updater;
-        uint256 updatedAt;
         string metadataURI;
     }
 
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
-    CountersUpgradeable.Counter private _tokenIdCounter;
     bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
+    CountersUpgradeable.Counter private _tokenIdCounter;
     string public baseURI;
-    mapping(bytes32 => MetadataContainer) private metadataStorage; // keccak256(bytes32(tokenId, version))
+    mapping(bytes32 => MetadataContainer) public metadataStorage; // keccak256(bytes32(tokenId, version))
     mapping(uint256 => uint256) public tokenURICurrentVersion; // tokenId: tokenURIVersion
 
     /// @custom:oz-upgrades-unsafe-allow constructor
@@ -54,8 +53,11 @@ contract AINFT721Upgradeable is
         _disableInitializers();
     }
 
-    function initialize() initializer public {
-        __ERC721_init("AINFT721 Template", "AFT");
+    function initialize(
+        string memory name_,
+        string memory symbol_
+    ) public initializer {
+        __ERC721_init(name_, symbol_);
         __ERC721Enumerable_init();
         __ERC721URIStorage_init();
         __Pausable_init();
@@ -81,33 +83,42 @@ contract AINFT721Upgradeable is
         _unpause();
     }
 
-    function safeMint(address to, string memory uri) public onlyRole(MINTER_ROLE) {
+    function safeMint(
+        address to,
+        string memory uri
+    ) public onlyRole(MINTER_ROLE) {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
     }
 
-    function _beforeTokenTransfer(address from, address to, uint256 tokenId, uint256 batchSize)
+    function _beforeTokenTransfer(
+        address from,
+        address to,
+        uint256 tokenId,
+        uint256 batchSize
+    )
         internal
-        whenNotPaused
         override(ERC721Upgradeable, ERC721EnumerableUpgradeable)
+        whenNotPaused
     {
         super._beforeTokenTransfer(from, to, tokenId, batchSize);
     }
 
-    function _authorizeUpgrade(address newImplementation)
-        internal
-        onlyRole(UPGRADER_ROLE)
-        override
-    {}
+    function _authorizeUpgrade(
+        address newImplementation
+    ) internal override onlyRole(UPGRADER_ROLE) {}
+
+    function logicVersion() external virtual returns (uint256) {
+        return 1;
+    }
 
     // The following functions are overrides required by Solidity.
 
-    function _burn(uint256 tokenId)
-        internal
-        override(ERC721Upgradeable, ERC721URIStorageUpgradeable)
-    {
+    function _burn(
+        uint256 tokenId
+    ) internal override(ERC721Upgradeable, ERC721URIStorageUpgradeable) {
         super._burn(tokenId);
     }
 
@@ -118,7 +129,9 @@ contract AINFT721Upgradeable is
         super._requireMinted(tokenId);
     }
 
-    function tokenURI(uint256 tokenId)
+    function tokenURI(
+        uint256 tokenId
+    )
         public
         view
         override(ERC721Upgradeable, ERC721URIStorageUpgradeable)
@@ -126,26 +139,36 @@ contract AINFT721Upgradeable is
     {
         //TODO
         _requireMinted(tokenId);
-        return getRecentTokenURI(tokenId);        
+        return getRecentTokenURI(tokenId);
     }
 
-    function supportsInterface(bytes4 interfaceId)
+    function supportsInterface(
+        bytes4 interfaceId
+    )
         public
         view
-        override(AccessControlUpgradeable, ERC721EnumerableUpgradeable, ERC721Upgradeable, IERC165Upgradeable)
+        override(
+            AccessControlUpgradeable,
+            ERC721EnumerableUpgradeable,
+            ERC721Upgradeable,
+            IERC165Upgradeable
+        )
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
     }
 
-    
-    function setBaseURI(string memory newBaseURI)
-        public
-        onlyRole(DEFAULT_ADMIN_ROLE)
-        returns (bool)
-    {
-        require(bytes(newBaseURI).length > 0, "AINFT721::setBaseURI() - Empty newBaseURI");
-        require(keccak256(bytes(newBaseURI)) != keccak256(bytes(baseURI)), "AINFT721::setBaseURI() - Same newBaseURI as baseURI");
+    function setBaseURI(
+        string memory newBaseURI
+    ) public onlyRole(DEFAULT_ADMIN_ROLE) returns (bool) {
+        require(
+            bytes(newBaseURI).length > 0,
+            "AINFT721::setBaseURI() - Empty newBaseURI"
+        );
+        require(
+            keccak256(bytes(newBaseURI)) != keccak256(bytes(baseURI)),
+            "AINFT721::setBaseURI() - Same newBaseURI as baseURI"
+        );
 
         baseURI = newBaseURI;
         return true;
@@ -154,76 +177,100 @@ contract AINFT721Upgradeable is
     /**
      * Override the IAINFT.sol
      */
-    function setTokenURIByUser(uint256 tokenId, string memory newTokenURI)
-        external 
-        returns (bool)
-    {
-        require(_msgSender() == ownerOf(tokenId), "AINFT721::setTokenURIByUser() - not owner of tokenId");
-        super._setTokenURI(tokenId, newTokenURI);
+
+    function getMetadataStorageKey(
+        uint256 tokenId,
+        uint256 version
+    ) public pure returns (bytes32) {
         
+        return keccak256(
+            bytes(
+                string(
+                    abi.encodePacked(tokenId.toString(), "AINFT delimeter", version.toString())
+                    )
+                )
+        );
+    }
+
+    /**
+     * @dev version up & upload the metadata
+     */
+    function updateTokenURI(
+        uint256 tokenId,
+        string memory newTokenURI
+    ) external returns (bool) {
+        require(
+            (_msgSender() == ownerOf(tokenId)) ||
+            hasRole(DEFAULT_ADMIN_ROLE, _msgSender()),
+            "AINFT721::updateTokenURI() - not owner of tokenId or contract owner"
+        );
+
+        uint256 updatedVersion = ++tokenURICurrentVersion[tokenId];
+        bytes32 metadataKey = getMetadataStorageKey(tokenId, updatedVersion);
+        metadataStorage[metadataKey] = MetadataContainer({
+                                                updater: _msgSender(),
+                                                metadataURI: newTokenURI
+                                        });
+        super._setTokenURI(tokenId, newTokenURI);
         emit MetadataUpdate(tokenId);
         return true;
     }
 
-    function setTokenURIByOwner(uint256 tokenId, string memory newTokenURI)
-        external
-        onlyRole(DEFAULT_ADMIN_ROLE)
-        returns (bool)
-    {
-        super._setTokenURI(tokenId, newTokenURI);
-        
-        emit MetadataUpdate(tokenId);
-        return true;
-    }
-
-    function getOriginTokenURI(uint256 tokenId) 
-        external 
-        view 
-        returns (string memory)
-    {
+    /**
+     * @dev if you've ever updated the metadata more than once, rollback the metadata to the previous one and return true.
+     * if its metadata has not been updated yet or failed to update, return false
+     */
+    function _rollbackTokenURI(uint256 tokenId) internal returns (bool) {
+        require(
+            (_msgSender() == ownerOf(tokenId)) ||
+                hasRole(DEFAULT_ADMIN_ROLE, _msgSender()),
+            "AINFT721::rollbackTokenURI() - only contract owner or token holder can call this funciton."
+        );
         uint256 currentVersion = tokenURICurrentVersion[tokenId];
-        if (currentVersion == 0) return _baseURI();
-        else return metadataStorage[keccak256(bytes(
-            string(abi.encodePacked(tokenId.toString(), 
-                                    "AINFT delimeter", 
-                                    "0"
-                                    )
-                )
-            ))].metadataURI;
+        if (currentVersion == 0) return false;
+        else {
+            //delete the currentVersion of metadataStorage
+            bytes32 currentMetadataKey = getMetadataStorageKey(tokenId, currentVersion);
+            delete metadataStorage[currentMetadataKey];
+
+            //rollback the version
+            tokenURICurrentVersion[tokenId]--;
+            return true;
+        }
     }
 
-    function getPreviousTokenURI(uint256 tokenId) 
-        external 
-        view 
-        returns (string memory)
-    {
+    function rollbackTokenURI(uint256 tokenId) external returns (bool) {
+        return _rollbackTokenURI(tokenId);
+    }
+
+    function getOriginTokenURI(
+        uint256 tokenId
+    ) public view override returns (string memory) {
+        return string(abi.encodePacked(_baseURI(), "/", tokenId.toString()));
+    }
+
+    function getRecentTokenURI(
+        uint256 tokenId
+    ) public view override returns (string memory) {
         uint256 currentVersion = tokenURICurrentVersion[tokenId];
-        if (currentVersion == 0) return "";
-        else return metadataStorage[keccak256(bytes(
-            string(abi.encodePacked(tokenId.toString(), 
-                                    "AINFT delimeter", 
-                                    (currentVersion - 1).toString()
-                                    )
-                )
-            ))].metadataURI;
+        if (currentVersion == 0) {
+            return getOriginTokenURI(tokenId);
+        } else {
+            bytes32 metadataKey = getMetadataStorageKey(tokenId, currentVersion);
+            return metadataStorage[metadataKey].metadataURI;
+        }
     }
 
-    function getRecentTokenURI(uint256 tokenId)
-        public
-        override
-        view
-        returns (string memory) 
-    {
-        uint256 currentVersion = tokenURICurrentVersion[tokenId];
-        if (currentVersion == 0) return string(abi.encodePacked(_baseURI(), "/", tokenId.toString()));
-        else return metadataStorage[keccak256(bytes(
-            string(abi.encodePacked(tokenId.toString(), 
-                                    "AINFT delimeter", 
-                                    currentVersion.toString()
-                                    )
-                )
-            ))].metadataURI;
+    function getCertainTokenURI(
+        uint256 tokenId,
+        uint256 uriVersion
+    ) public view override returns (string memory) {
+
+        if (uriVersion == 0) {
+            return getOriginTokenURI(tokenId);
+        } else {
+            bytes32 metadataKey = getMetadataStorageKey(tokenId, uriVersion);
+            return metadataStorage[metadataKey].metadataURI;
+        }
     }
-
-
 }
