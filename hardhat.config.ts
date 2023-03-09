@@ -3,8 +3,8 @@ import { HardhatUserConfig } from "hardhat/config";
 import "@openzeppelin/hardhat-upgrades"
 import "@nomicfoundation/hardhat-toolbox";
 import "hardhat-gas-reporter";
+import "hardhat-contract-sizer";
 import "solidity-docgen";
-import { userConfig } from "hardhat";
 
 // import "./scripts/deploy";
 dotenv.config();
@@ -12,15 +12,19 @@ dotenv.config();
 const config: HardhatUserConfig = {
   solidity: {
     version: "0.8.18",
+    // refer to https://docs.soliditylang.org/en/v0.8.18/using-the-compiler.html
     settings: {
-      metadata: {
-        bytecodeHash: "none",
-      },
       optimizer: {
         enabled: true,
         runs: 200,
       },
     },
+  },
+  contractSizer: {
+    alphaSort: true,
+    runOnCompile: true,
+    disambiguatePaths: false,
+    strict: true, // throws an error if your code exceeds 24576 Bytes, refer to https://github.com/ItsNickBarry/hardhat-contract-sizer/blob/95b202e75df3cc3fe309332bb8fa2062ad9a6ea2/tasks/size_contracts.js#L22
   },
   defaultNetwork: "hardhat",
   networks: {
