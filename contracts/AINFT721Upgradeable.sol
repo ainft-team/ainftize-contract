@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
+//import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721URIStorageUpgradeable.sol";
+// import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721URIStorageUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721BurnableUpgradeable.sol";
@@ -22,9 +22,7 @@ import "./interfaces/IAINFT.sol";
  */
 contract AINFT721Upgradeable is
     Initializable,
-    ERC721Upgradeable,
     ERC721EnumerableUpgradeable,
-    ERC721URIStorageUpgradeable,
     PausableUpgradeable,
     AccessControlUpgradeable,
     ERC721BurnableUpgradeable,
@@ -59,7 +57,6 @@ contract AINFT721Upgradeable is
     ) public initializer {
         __ERC721_init(name_, symbol_);
         __ERC721Enumerable_init();
-        __ERC721URIStorage_init();
         __Pausable_init();
         __AccessControl_init();
         __ERC721Burnable_init();
@@ -84,13 +81,16 @@ contract AINFT721Upgradeable is
     }
 
     function safeMint(
-        address to,
-        string memory uri
-    ) public onlyRole(MINTER_ROLE) {
+        address to
+    )
+        public
+        // string memory uri
+        onlyRole(MINTER_ROLE)
+    {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
-        _setTokenURI(tokenId, uri);
+        // _setTokenURI(tokenId, uri);
     }
 
     function _beforeTokenTransfer(
@@ -110,15 +110,13 @@ contract AINFT721Upgradeable is
         address newImplementation
     ) internal override onlyRole(UPGRADER_ROLE) {}
 
-    function logicVersion() external virtual returns (uint256) {
+    function logicVersion() external pure virtual returns (uint256) {
         return 1;
     }
 
     // The following functions are overrides required by Solidity.
 
-    function _burn(
-        uint256 tokenId
-    ) internal override(ERC721Upgradeable, ERC721URIStorageUpgradeable) {
+    function _burn(uint256 tokenId) internal override(ERC721Upgradeable) {
         super._burn(tokenId);
     }
 
@@ -131,12 +129,7 @@ contract AINFT721Upgradeable is
 
     function tokenURI(
         uint256 tokenId
-    )
-        public
-        view
-        override(ERC721Upgradeable, ERC721URIStorageUpgradeable)
-        returns (string memory)
-    {
+    ) public view override(ERC721Upgradeable) returns (string memory) {
         //TODO
         _requireMinted(tokenId);
         return getRecentTokenURI(tokenId);
@@ -182,14 +175,18 @@ contract AINFT721Upgradeable is
         uint256 tokenId,
         uint256 version
     ) public pure returns (bytes32) {
-        
-        return keccak256(
-            bytes(
-                string(
-                    abi.encodePacked(tokenId.toString(), "AINFT delimeter", version.toString())
+        return
+            keccak256(
+                bytes(
+                    string(
+                        abi.encodePacked(
+                            tokenId.toString(),
+                            "AINFT delimeter",
+                            version.toString()
+                        )
                     )
                 )
-        );
+            );
     }
 
     /**
@@ -201,17 +198,17 @@ contract AINFT721Upgradeable is
     ) external returns (bool) {
         require(
             (_msgSender() == ownerOf(tokenId)) ||
-            hasRole(DEFAULT_ADMIN_ROLE, _msgSender()),
+                hasRole(DEFAULT_ADMIN_ROLE, _msgSender()),
             "AINFT721::updateTokenURI() - not owner of tokenId or contract owner"
         );
 
         uint256 updatedVersion = ++tokenURICurrentVersion[tokenId];
         bytes32 metadataKey = getMetadataStorageKey(tokenId, updatedVersion);
         metadataStorage[metadataKey] = MetadataContainer({
-                                                updater: _msgSender(),
-                                                metadataURI: newTokenURI
-                                        });
-        super._setTokenURI(tokenId, newTokenURI);
+            updater: _msgSender(),
+            metadataURI: newTokenURI
+        });
+        // super._setTokenURI(tokenId, newTokenURI);
         emit MetadataUpdate(tokenId);
         return true;
     }
@@ -230,7 +227,10 @@ contract AINFT721Upgradeable is
         if (currentVersion == 0) return false;
         else {
             //delete the currentVersion of metadataStorage
-            bytes32 currentMetadataKey = getMetadataStorageKey(tokenId, currentVersion);
+            bytes32 currentMetadataKey = getMetadataStorageKey(
+                tokenId,
+                currentVersion
+            );
             delete metadataStorage[currentMetadataKey];
 
             //rollback the version
@@ -256,7 +256,10 @@ contract AINFT721Upgradeable is
         if (currentVersion == 0) {
             return getOriginTokenURI(tokenId);
         } else {
-            bytes32 metadataKey = getMetadataStorageKey(tokenId, currentVersion);
+            bytes32 metadataKey = getMetadataStorageKey(
+                tokenId,
+                currentVersion
+            );
             return metadataStorage[metadataKey].metadataURI;
         }
     }
@@ -265,7 +268,6 @@ contract AINFT721Upgradeable is
         uint256 tokenId,
         uint256 uriVersion
     ) public view override returns (string memory) {
-
         if (uriVersion == 0) {
             return getOriginTokenURI(tokenId);
         } else {

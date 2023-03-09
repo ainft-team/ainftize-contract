@@ -13,7 +13,7 @@ contract AINFT721LogicV2 is AINFT721Upgradeable {
                 hasRole(DEFAULT_ADMIN_ROLE, _msgSender()),
             "AINFT721LogicV2::example__resetTokenURI() - only contract owner or token holder can call this funciton."
         );
-        bool ret = true;
+        bool ret = false;
         uint256 currentVersion = tokenURICurrentVersion[tokenId];
         for (uint256 i = currentVersion; i > 0; i--) {
             bool success = _rollbackTokenURI(tokenId);
@@ -25,7 +25,7 @@ contract AINFT721LogicV2 is AINFT721Upgradeable {
     /**
      * @dev get the logic contract version
      */
-    function logicVersion() external virtual override returns (uint256) {
+    function logicVersion() external pure virtual override returns (uint256) {
         return 2;
     }
 }
