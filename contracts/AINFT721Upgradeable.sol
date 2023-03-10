@@ -42,9 +42,9 @@ contract AINFT721Upgradeable is
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
     CountersUpgradeable.Counter private _tokenIdCounter;
-    string public baseURI;
-    mapping(bytes32 => MetadataContainer) public metadataStorage; // keccak256(bytes32(tokenId, version))
-    mapping(uint256 => uint256) public tokenURICurrentVersion; // tokenId: tokenURIVersion
+    string private baseURI;
+    mapping(bytes32 => MetadataContainer) private _metadataStorage; // keccak256(bytes32(tokenId, version))
+    mapping(uint256 => uint256) private _tokenURICurrentVersion; // tokenId: tokenURIVersion
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -130,7 +130,7 @@ contract AINFT721Upgradeable is
     function tokenURI(
         uint256 tokenId
     ) public view override(ERC721Upgradeable) returns (string memory) {
-        //TODO
+
         _requireMinted(tokenId);
         return getRecentTokenURI(tokenId);
     }
@@ -202,9 +202,9 @@ contract AINFT721Upgradeable is
             "AINFT721::updateTokenURI() - not owner of tokenId or contract owner"
         );
 
-        uint256 updatedVersion = ++tokenURICurrentVersion[tokenId];
+        uint256 updatedVersion = ++_tokenURICurrentVersion[tokenId];
         bytes32 metadataKey = getMetadataStorageKey(tokenId, updatedVersion);
-        metadataStorage[metadataKey] = MetadataContainer({
+        _metadataStorage[metadataKey] = MetadataContainer({
             updater: _msgSender(),
             metadataURI: newTokenURI
         });
@@ -223,18 +223,18 @@ contract AINFT721Upgradeable is
                 hasRole(DEFAULT_ADMIN_ROLE, _msgSender()),
             "AINFT721::rollbackTokenURI() - only contract owner or token holder can call this funciton."
         );
-        uint256 currentVersion = tokenURICurrentVersion[tokenId];
+        uint256 currentVersion = _tokenURICurrentVersion[tokenId];
         if (currentVersion == 0) return false;
         else {
-            //delete the currentVersion of metadataStorage
+            //delete the currentVersion of _metadataStorage
             bytes32 currentMetadataKey = getMetadataStorageKey(
                 tokenId,
                 currentVersion
             );
-            delete metadataStorage[currentMetadataKey];
+            delete _metadataStorage[currentMetadataKey];
 
             //rollback the version
-            tokenURICurrentVersion[tokenId]--;
+            _tokenURICurrentVersion[tokenId]--;
             return true;
         }
     }
@@ -252,7 +252,7 @@ contract AINFT721Upgradeable is
     function getRecentTokenURI(
         uint256 tokenId
     ) public view override returns (string memory) {
-        uint256 currentVersion = tokenURICurrentVersion[tokenId];
+        uint256 currentVersion = _tokenURICurrentVersion[tokenId];
         if (currentVersion == 0) {
             return getOriginTokenURI(tokenId);
         } else {
@@ -260,7 +260,7 @@ contract AINFT721Upgradeable is
                 tokenId,
                 currentVersion
             );
-            return metadataStorage[metadataKey].metadataURI;
+            return _metadataStorage[metadataKey].metadataURI;
         }
     }
 
@@ -272,7 +272,7 @@ contract AINFT721Upgradeable is
             return getOriginTokenURI(tokenId);
         } else {
             bytes32 metadataKey = getMetadataStorageKey(tokenId, uriVersion);
-            return metadataStorage[metadataKey].metadataURI;
+            return _metadataStorage[metadataKey].metadataURI;
         }
     }
 }
