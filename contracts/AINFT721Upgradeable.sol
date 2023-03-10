@@ -68,8 +68,20 @@ contract AINFT721Upgradeable is
         _grantRole(UPGRADER_ROLE, msg.sender);
     }
 
-    function _baseURI() internal view override returns (string memory) {
-        return baseURI;
+    function supportsInterface(
+        bytes4 interfaceId
+    )
+        public
+        view
+        override(
+            AccessControlUpgradeable,
+            ERC721EnumerableUpgradeable,
+            ERC721Upgradeable,
+            IERC165Upgradeable
+        )
+        returns (bool)
+    {
+        return super.supportsInterface(interfaceId);
     }
 
     function pause() public onlyRole(PAUSER_ROLE) {
@@ -90,7 +102,6 @@ contract AINFT721Upgradeable is
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
-        // _setTokenURI(tokenId, uri);
     }
 
     function _beforeTokenTransfer(
@@ -106,6 +117,10 @@ contract AINFT721Upgradeable is
         super._beforeTokenTransfer(from, to, tokenId, batchSize);
     }
 
+    ////
+    // UPGRADEABLE RELATED FUNCTIONS
+    ////
+
     function _authorizeUpgrade(
         address newImplementation
     ) internal override onlyRole(UPGRADER_ROLE) {}
@@ -114,10 +129,20 @@ contract AINFT721Upgradeable is
         return 1;
     }
 
-    // The following functions are overrides required by Solidity.
+    ////
+    ////
 
+    // The following functions are overrides required by Solidity.
     function _burn(uint256 tokenId) internal override(ERC721Upgradeable) {
         super._burn(tokenId);
+    }
+
+    ////
+    // URI VIEW FUNCTIONS
+    ////
+
+    function _baseURI() internal view override returns (string memory) {
+        return baseURI;
     }
 
     /**
@@ -130,26 +155,83 @@ contract AINFT721Upgradeable is
     function tokenURI(
         uint256 tokenId
     ) public view override(ERC721Upgradeable) returns (string memory) {
-
         _requireMinted(tokenId);
         return getRecentTokenURI(tokenId);
     }
 
-    function supportsInterface(
-        bytes4 interfaceId
-    )
-        public
-        view
-        override(
-            AccessControlUpgradeable,
-            ERC721EnumerableUpgradeable,
-            ERC721Upgradeable,
-            IERC165Upgradeable
-        )
-        returns (bool)
-    {
-        return super.supportsInterface(interfaceId);
+    function _getMetadataStorageKey(
+        uint256 tokenId,
+        uint256 version
+    ) internal pure returns (bytes32) {
+        return
+            keccak256(
+                bytes(
+                    string(
+                        abi.encodePacked(
+                            tokenId.toString(),
+                            "AINFT delimeter",
+                            version.toString()
+                        )
+                    )
+                )
+            );
     }
+
+    function getMetadataStorage(
+        uint256 tokenId
+    ) public view returns (MetadataContainer memory) {
+        //TODO
+        uint256 currentVersion = _tokenURICurrentVersion[tokenId];
+        bytes32 key = _getMetadataStorageKey(tokenId, currentVersion);
+
+        return _metadataStorage[key];
+    }
+
+    function getTokenURICurrentVersion(
+        uint256 tokenId
+    ) public view returns (uint256) {
+        return _tokenURICurrentVersion[tokenId];
+    }
+
+    function getOriginTokenURI(
+        uint256 tokenId
+    ) public view override returns (string memory) {
+        return string(abi.encodePacked(_baseURI(), "/", tokenId.toString()));
+    }
+
+    function getRecentTokenURI(
+        uint256 tokenId
+    ) public view override returns (string memory) {
+        uint256 currentVersion = _tokenURICurrentVersion[tokenId];
+        if (currentVersion == 0) {
+            return getOriginTokenURI(tokenId);
+        } else {
+            bytes32 metadataKey = _getMetadataStorageKey(
+                tokenId,
+                currentVersion
+            );
+            return _metadataStorage[metadataKey].metadataURI;
+        }
+    }
+
+    function getCertainTokenURI(
+        uint256 tokenId,
+        uint256 uriVersion
+    ) public view override returns (string memory) {
+        if (uriVersion == 0) {
+            return getOriginTokenURI(tokenId);
+        } else {
+            bytes32 metadataKey = _getMetadataStorageKey(tokenId, uriVersion);
+            return _metadataStorage[metadataKey].metadataURI;
+        }
+    }
+
+    ////
+    ////
+
+    ////
+    // UPDATE URI(METADATA) FUNCTIONS
+    ////
 
     function setBaseURI(
         string memory newBaseURI
@@ -168,28 +250,6 @@ contract AINFT721Upgradeable is
     }
 
     /**
-     * Override the IAINFT.sol
-     */
-
-    function getMetadataStorageKey(
-        uint256 tokenId,
-        uint256 version
-    ) public pure returns (bytes32) {
-        return
-            keccak256(
-                bytes(
-                    string(
-                        abi.encodePacked(
-                            tokenId.toString(),
-                            "AINFT delimeter",
-                            version.toString()
-                        )
-                    )
-                )
-            );
-    }
-
-    /**
      * @dev version up & upload the metadata
      */
     function updateTokenURI(
@@ -203,7 +263,7 @@ contract AINFT721Upgradeable is
         );
 
         uint256 updatedVersion = ++_tokenURICurrentVersion[tokenId];
-        bytes32 metadataKey = getMetadataStorageKey(tokenId, updatedVersion);
+        bytes32 metadataKey = _getMetadataStorageKey(tokenId, updatedVersion);
         _metadataStorage[metadataKey] = MetadataContainer({
             updater: _msgSender(),
             metadataURI: newTokenURI
@@ -227,7 +287,7 @@ contract AINFT721Upgradeable is
         if (currentVersion == 0) return false;
         else {
             //delete the currentVersion of _metadataStorage
-            bytes32 currentMetadataKey = getMetadataStorageKey(
+            bytes32 currentMetadataKey = _getMetadataStorageKey(
                 tokenId,
                 currentVersion
             );
@@ -241,38 +301,5 @@ contract AINFT721Upgradeable is
 
     function rollbackTokenURI(uint256 tokenId) external returns (bool) {
         return _rollbackTokenURI(tokenId);
-    }
-
-    function getOriginTokenURI(
-        uint256 tokenId
-    ) public view override returns (string memory) {
-        return string(abi.encodePacked(_baseURI(), "/", tokenId.toString()));
-    }
-
-    function getRecentTokenURI(
-        uint256 tokenId
-    ) public view override returns (string memory) {
-        uint256 currentVersion = _tokenURICurrentVersion[tokenId];
-        if (currentVersion == 0) {
-            return getOriginTokenURI(tokenId);
-        } else {
-            bytes32 metadataKey = getMetadataStorageKey(
-                tokenId,
-                currentVersion
-            );
-            return _metadataStorage[metadataKey].metadataURI;
-        }
-    }
-
-    function getCertainTokenURI(
-        uint256 tokenId,
-        uint256 uriVersion
-    ) public view override returns (string memory) {
-        if (uriVersion == 0) {
-            return getOriginTokenURI(tokenId);
-        } else {
-            bytes32 metadataKey = getMetadataStorageKey(tokenId, uriVersion);
-            return _metadataStorage[metadataKey].metadataURI;
-        }
     }
 }

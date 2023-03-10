@@ -14,7 +14,7 @@ contract AINFT721LogicV2 is AINFT721Upgradeable {
             "AINFT721LogicV2::example__resetTokenURI() - only contract owner or token holder can call this funciton."
         );
         bool ret = false;
-        uint256 currentVersion = tokenURICurrentVersion[tokenId];
+        uint256 currentVersion = getTokenURICurrentVersion(tokenId);
         for (uint256 i = currentVersion; i > 0; i--) {
             bool success = _rollbackTokenURI(tokenId);
             ret = ret || success;
