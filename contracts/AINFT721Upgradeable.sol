@@ -162,18 +162,18 @@ contract AINFT721Upgradeable is
     function _getMetadataStorageKey(
         uint256 tokenId,
         uint256 version
-    ) internal pure returns (bytes32) {
+    ) public pure returns (bytes32) {
         return
             keccak256(
-                bytes(
-                    string(
+                // bytes(
+                //     string(
                         abi.encodePacked(
                             tokenId.toString(),
                             "AINFT delimeter",
                             version.toString()
                         )
-                    )
-                )
+                //     )
+                // )
             );
     }
 
