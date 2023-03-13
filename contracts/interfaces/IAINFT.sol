@@ -3,8 +3,6 @@ pragma solidity ^0.8.9;
 
 //TODO: implement the function inside
 interface IAINFT {
-
-    
     
     function updateTokenURI(uint256 tokenId, string memory newTokenURI) external returns (bool);
     
