@@ -43,7 +43,7 @@ contract AINFT721Upgradeable is
     bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
     CountersUpgradeable.Counter private _tokenIdCounter;
     string private baseURI;
-    mapping(bytes32 => MetadataContainer) private _metadataStorage; // keccak256(bytes32(tokenId, version))
+    mapping(bytes32 => MetadataContainer) private _metadataStorage; // keccak256(bytes32(tokenId, <DELIMETER>, version))
     mapping(uint256 => uint256) private _tokenURICurrentVersion; // tokenId: tokenURIVersion
 
     /// @custom:oz-upgrades-unsafe-allow constructor
@@ -250,7 +250,7 @@ contract AINFT721Upgradeable is
     }
 
     /**
-     * @dev version up & upload the metadata
+     * @dev version up & upload the metadata. You should call this function externally when the token is updated.
      */
     function updateTokenURI(
         uint256 tokenId,
@@ -295,6 +295,7 @@ contract AINFT721Upgradeable is
 
             //rollback the version
             _tokenURICurrentVersion[tokenId]--;
+            emit MetadataUpdate(tokenId);
             return true;
         }
     }
