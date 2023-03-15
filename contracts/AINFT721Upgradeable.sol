@@ -41,8 +41,8 @@ contract AINFT721Upgradeable is
     bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
     CountersUpgradeable.Counter private _tokenIdCounter;
     string private baseURI;
-    mapping(bytes32 => MetadataContainer) private _metadataStorage; // keccak256(bytes32(tokenId, <DELIMETER>, version))
-    mapping(uint256 => uint256) private _tokenURICurrentVersion; // tokenId: tokenURIVersion
+    mapping(bytes32 => MetadataContainer) private _metadataStorage; // keccak256(bytes(tokenId, <DELIMETER>, version)) => MetadataContainer
+    mapping(uint256 => uint256) private _tokenURICurrentVersion; // tokenId => tokenURIVersion
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -144,7 +144,7 @@ contract AINFT721Upgradeable is
     }
 
     ////
-    // URI VIEW FUNCTIONS
+    // URI RELATED FUNCTIONS
     ////
 
     function _baseURI() internal view override(ERC721Upgradeable) returns (string memory) {
@@ -203,13 +203,6 @@ contract AINFT721Upgradeable is
         }
     }
 
-    ////
-    ////
-
-    ////
-    // UPDATE URI(METADATA) FUNCTIONS
-    ////
-
     function setBaseURI(
         string memory newBaseURI
     ) external onlyRole(DEFAULT_ADMIN_ROLE) returns (bool) {
@@ -226,6 +219,12 @@ contract AINFT721Upgradeable is
         //TODO: emit BatchMetadataUpdate(start, end). Consider after updateTokenURI() calls.
         return true;
     }
+    ////
+    ////
+
+    ////
+    // IAINFT.sol implementation
+    ////
 
     /**
      * @dev version up & upload the metadata. You should call this function externally when the token is updated.

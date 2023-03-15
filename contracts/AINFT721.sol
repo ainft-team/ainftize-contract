@@ -33,7 +33,7 @@ contract AINFT721 is
 
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
-    bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
+
     Counters.Counter private _tokenIdCounter;
     string private baseURI;
     mapping(bytes32 => MetadataContainer) private _metadataStorage; // keccak256(bytes(tokenId, <DELIMETER>, version)) => MetadataContainer
@@ -58,7 +58,7 @@ contract AINFT721 is
         )
         returns (bool)
     {
-        return super.supportsInterface(interfaceId);
+        return interfaceId == bytes4(0x49064906) || super.supportsInterface(interfaceId);
     }
 
     function pause() public onlyRole(PAUSER_ROLE) {
@@ -93,106 +93,77 @@ contract AINFT721 is
         super._beforeTokenTransfer(from, to, tokenId, batchSize);
     }
 
-    // The following functions are overrides required by Solidity.
-    function _burn(uint256 tokenId) internal override(ERC721) {
-        super._burn(tokenId);
-    }
-
-    ////
-    // URI VIEW FUNCTIONS
-    ////
-
-    function _baseURI() internal view override returns (string memory) {
-        return baseURI;
-    }
-
     /**
      * @dev Reverts if the `tokenId` has not been minted yet.
      */
-    function _requireMinted(uint256 tokenId) internal view virtual override {
+    function _requireMinted(uint256 tokenId) internal view virtual override(ERC721) {
         super._requireMinted(tokenId);
+    }
+
+    function _isApprovedOrOwner(
+        address spender, 
+        uint256 tokenId
+    ) internal view virtual override(ERC721) returns (bool)
+    {
+        return super._isApprovedOrOwner(spender, tokenId);
+    }
+
+    function burn(uint256 tokenId) public override(ERC721Burnable) {
+        super.burn(tokenId);
+    }
+
+    ////
+    // URI & METADATA RELATED FUNCTIONS
+    ////
+
+    function _baseURI() internal view override(ERC721) returns (string memory) {
+        return baseURI;
     }
 
     function tokenURI(
         uint256 tokenId
     ) public view override(ERC721) returns (string memory) {
         _requireMinted(tokenId);
-        return getRecentTokenURI(tokenId);
+        uint256 currentVersion = _tokenURICurrentVersion[tokenId];
+
+        return tokenURIByVersion(tokenId, currentVersion);
     }
 
-    function _getMetadataStorageKey(
+    function _metadataStorageKey(
         uint256 tokenId,
         uint256 version
     ) internal pure returns (bytes32) {
-        return
-            keccak256(
-                bytes(
-                    string(
-                        abi.encodePacked(
-                            tokenId.toString(),
-                            "AINFT delimeter",
-                            version.toString()
-                        )
-                    )
-                )
-            );
+        return keccak256(abi.encodePacked(tokenId.toString(), "AINFT delimeter", version));
     }
 
-    function getMetadataStorage(
-        uint256 tokenId
+    function metadataStorageByVersion(
+        uint256 tokenId,
+        uint256 version
     ) public view returns (MetadataContainer memory) {
-        //TODO
-        uint256 currentVersion = _tokenURICurrentVersion[tokenId];
-        bytes32 key = _getMetadataStorageKey(tokenId, currentVersion);
-
+    
+        bytes32 key = _metadataStorageKey(tokenId, version);
         return _metadataStorage[key];
     }
 
-    function getTokenURICurrentVersion(
+    function tokenURICurrentVersion(
         uint256 tokenId
     ) public view returns (uint256) {
+        _requireMinted(tokenId);
         return _tokenURICurrentVersion[tokenId];
     }
 
-    function getOriginTokenURI(
-        uint256 tokenId
-    ) public view override returns (string memory) {
-        return string(abi.encodePacked(_baseURI(), "/", tokenId.toString()));
-    }
-
-    function getRecentTokenURI(
-        uint256 tokenId
-    ) public view override returns (string memory) {
-        uint256 currentVersion = _tokenURICurrentVersion[tokenId];
-        if (currentVersion == 0) {
-            return getOriginTokenURI(tokenId);
-        } else {
-            bytes32 metadataKey = _getMetadataStorageKey(
-                tokenId,
-                currentVersion
-            );
-            return _metadataStorage[metadataKey].metadataURI;
-        }
-    }
-
-    function getCertainTokenURI(
+    function tokenURIByVersion(
         uint256 tokenId,
         uint256 uriVersion
-    ) public view override returns (string memory) {
+    ) public view returns (string memory) {
+        _requireMinted(tokenId);
         if (uriVersion == 0) {
-            return getOriginTokenURI(tokenId);
+            return string(abi.encodePacked(baseURI, tokenId.toString()));
         } else {
-            bytes32 metadataKey = _getMetadataStorageKey(tokenId, uriVersion);
-            return _metadataStorage[metadataKey].metadataURI;
+            MetadataContainer memory metadata = metadataStorageByVersion(tokenId, uriVersion);
+            return metadata.metadataURI;
         }
     }
-
-    ////
-    ////
-
-    ////
-    // UPDATE URI(METADATA) FUNCTIONS
-    ////
 
     function setBaseURI(
         string memory newBaseURI
@@ -207,6 +178,7 @@ contract AINFT721 is
         );
 
         baseURI = newBaseURI;
+        //TODO: emit BatchMetadataUpdate(start, end). Consider after updateTokenURI() calls.
         return true;
     }
 
@@ -218,17 +190,19 @@ contract AINFT721 is
         string memory newTokenURI
     ) external returns (bool) {
         require(
-            (_msgSender() == ownerOf(tokenId)) ||
-                hasRole(DEFAULT_ADMIN_ROLE, _msgSender()),
+            (_isApprovedOrOwner(_msgSender(), tokenId) ||
+                hasRole(DEFAULT_ADMIN_ROLE, _msgSender())),
             "AINFT721::updateTokenURI() - not owner of tokenId or contract owner"
         );
+        _requireMinted(tokenId);
 
         uint256 updatedVersion = ++_tokenURICurrentVersion[tokenId];
-        bytes32 metadataKey = _getMetadataStorageKey(tokenId, updatedVersion);
+        bytes32 metadataKey = _metadataStorageKey(tokenId, updatedVersion);
         _metadataStorage[metadataKey] = MetadataContainer({
             updater: _msgSender(),
             metadataURI: newTokenURI
         });
+
         emit MetadataUpdate(tokenId);
         return true;
     }
@@ -237,17 +211,19 @@ contract AINFT721 is
      * @dev if you've ever updated the metadata more than once, rollback the metadata to the previous one and return true.
      * if its metadata has not been updated yet or failed to update, return false
      */
-    function _rollbackTokenURI(uint256 tokenId) internal returns (bool) {
+    function rollbackTokenURI(uint256 tokenId) public returns (bool) {
         require(
             (_msgSender() == ownerOf(tokenId)) ||
                 hasRole(DEFAULT_ADMIN_ROLE, _msgSender()),
             "AINFT721::rollbackTokenURI() - only contract owner or token holder can call this funciton."
         );
+        _requireMinted(tokenId);
+
         uint256 currentVersion = _tokenURICurrentVersion[tokenId];
         if (currentVersion == 0) return false;
         else {
             //delete the currentVersion of _metadataStorage
-            bytes32 currentMetadataKey = _getMetadataStorageKey(
+            bytes32 currentMetadataKey = _metadataStorageKey(
                 tokenId,
                 currentVersion
             );
@@ -258,10 +234,6 @@ contract AINFT721 is
             emit MetadataUpdate(tokenId);
             return true;
         }
-    }
-
-    function rollbackTokenURI(uint256 tokenId) external returns (bool) {
-        return _rollbackTokenURI(tokenId);
     }
 
     ////
