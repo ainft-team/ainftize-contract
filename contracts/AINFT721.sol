@@ -45,6 +45,9 @@ contract AINFT721 is
         _grantRole(MINTER_ROLE, msg.sender);
     }
 
+    /**
+     * @dev See {IERC4906}.
+     */
     function supportsInterface(
         bytes4 interfaceId
     )
@@ -58,6 +61,7 @@ contract AINFT721 is
         )
         returns (bool)
     {
+        // IERC4906 interface added
         return interfaceId == bytes4(0x49064906) || super.supportsInterface(interfaceId);
     }
 

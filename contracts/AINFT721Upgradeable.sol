@@ -66,6 +66,9 @@ contract AINFT721Upgradeable is
         _grantRole(UPGRADER_ROLE, msg.sender);
     }
 
+    /**
+     * @dev See {IERC4906Upgradeable}.
+     */
     function supportsInterface(
         bytes4 interfaceId
     )
@@ -79,6 +82,7 @@ contract AINFT721Upgradeable is
         )
         returns (bool)
     {
+        // IERC4906 interface added
         return interfaceId == bytes4(0x49064906) || super.supportsInterface(interfaceId);
     }
 
@@ -144,7 +148,7 @@ contract AINFT721Upgradeable is
     }
 
     ////
-    // URI RELATED FUNCTIONS
+    // URI & METADATA RELATED FUNCTIONS
     ////
 
     function _baseURI() internal view override(ERC721Upgradeable) returns (string memory) {
@@ -219,12 +223,6 @@ contract AINFT721Upgradeable is
         //TODO: emit BatchMetadataUpdate(start, end). Consider after updateTokenURI() calls.
         return true;
     }
-    ////
-    ////
-
-    ////
-    // IAINFT.sol implementation
-    ////
 
     /**
      * @dev version up & upload the metadata. You should call this function externally when the token is updated.
