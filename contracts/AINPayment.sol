@@ -5,7 +5,6 @@ import "@openzeppelin/contracts/interfaces/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-import "./interfaces/IAINPayment.sol";
 import "./interfaces/IAINFT.sol";
 
 contract AINPayment is Ownable, ReentrancyGuard {
