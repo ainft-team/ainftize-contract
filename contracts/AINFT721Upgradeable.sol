@@ -126,6 +126,14 @@ contract AINFT721Upgradeable is
     {
         return super._isApprovedOrOwner(spender, tokenId);
     }
+
+    function isApprovedOrOwner(
+        address spender, 
+        uint256 tokenId
+    ) public view virtual returns (bool)
+    {
+        return _isApprovedOrOwner(spender, tokenId);
+    }
     
 
     ////

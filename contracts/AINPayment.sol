@@ -5,8 +5,8 @@ import "@openzeppelin/contracts/interfaces/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-import "../interfaces/IAINPayment.sol";
-import "../interfaces/IAINFT.sol";
+import "./interfaces/IAINPayment.sol";
+import "./interfaces/IAINFT.sol";
 
 contract AINPayment is Ownable, ReentrancyGuard {
     IERC20 public _ain;
@@ -15,16 +15,10 @@ contract AINPayment is Ownable, ReentrancyGuard {
     uint256[2] public _price; // [update_price, rollback_price]
 
     constructor(address ainft, address ain) {
-        require(ain == 0x3a810ff7211b40c4fa76205a14efe161615d0385, "AINPayment: only supports AIN ERC20");
+        require(ain == 0x3A810ff7211b40c4fA76205a14efe161615d0385, "AINPayment: only supports AIN ERC20");
         _ain = IERC20(ain);
         _ainft = IAINFT(ainft);
         _price = [0, 0];
-
-    }
-
-    modifier checkAllowance(uint256 amount) {
-        require(_ain.allowance(_msgSender(), address(this)) >= amount, "Allowance is smaller than amount");
-        _;
     }
 
     function setPrice(uint256[2] calldata price) external onlyOwner {
@@ -33,51 +27,63 @@ contract AINPayment is Ownable, ReentrancyGuard {
         _price[1] = price[1];
     }
 
-    function pay(uint256 amount) public nonReentrant returns(success) {
+    function pay(uint256 amount) public nonReentrant returns(bool) {
         require(amount > 0, "Amount must be greater than 0");
         require(_ain.balanceOf(_msgSender()) >= amount, "Insufficient balance");
         
-        bool success = _ain.transfer(address(this), amount);        
+        bool success = _ain.transfer(address(this), amount);
+        return success;
     }
 
-    function executeUpdate(uint256 tokenId, string memory newTokenURI) external returns(success) {
+    function executeUpdate(uint256 tokenId, string memory newTokenURI) external returns(bool) {
         require(_ainft.isApprovedOrOwner(_msgSender(), tokenId), "AINPayment::executeUpdate, owner of AINFT or holder only call this");
         require(pay(_price[0]), "Insufficient AIN");
 
         bool success = _ainft.updateTokenURI(tokenId, newTokenURI);
+        return success;
+
     }
 
-    function executeRollback(uint256 tokenId) external returns(success) {
+    function executeRollback(uint256 tokenId) external returns(bool) {
         require(_ainft.isApprovedOrOwner(_msgSender(), tokenId), "AINPayment::executeRollback, owner of AINFT or holder only call this");
         require(pay(_price[1]), "Insufficient AIN");
 
         bool success = _ainft.rollbackTokenURI(tokenId);
+        return success;
+
     }
 
-    function withdraw(uint256 amount) external onlyOwner nonReentrant returns(success) {
+    function withdraw(uint256 amount) public onlyOwner nonReentrant returns(bool) {
         require(owner() != address(0), "Owner should be set");
         require(_ain.balanceOf(address(this)) >= amount, "Insufficient balance");
 
         _ain.approve(owner(), amount);
         require(_ain.allowance(address(this), owner()) >= amount, "Insufficient amount is allowed");
         bool success = _ain.transferFrom(address(this), owner(), amount);
+        return success;
     }
 
-    function withdrawAll() external onlyOwner nonReentrant returns(success) {
+    function withdrawAll() public onlyOwner nonReentrant returns(bool) {
         require(owner() != address(0), "Owner should be set");
-        require(_ain.allowance(address(this), owner()) >= amount, "Insufficient amount is allowed");
 
         uint256 stackedAin = _ain.balanceOf(address(this));
         _ain.approve(owner(), stackedAin);
         require(_ain.allowance(address(this), owner()) >= stackedAin, "Insufficient amount is allowed");
         bool success = _ain.transferFrom(address(this), owner(), stackedAin);
+        return success;
     }
 
     function destruct(string memory areYouSure) external payable onlyOwner {
         require(owner() != address(0), "Owner should be set");
-        require(areYouSure == "DELETE", "Please type DELETE if you really want to destruct");
-        
+        require(keccak256(abi.encodePacked(areYouSure)) == keccak256(abi.encodePacked("DELETE")), "Please type DELETE if you really want to destruct");
+
+        // 1. withdraw all AIN to owner        
         withdrawAll();
-        selfdestruct(payable(owner()));
+
+        // 2. withdraw all ethers stored in this contract to owner
+        address payable _owner = payable(owner());
+        uint256 balance = address(this).balance;
+        require(balance > 0, "The contract has no funds to withdraw");
+        _owner.transfer(balance);
     }
 }
