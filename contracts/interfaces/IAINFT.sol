@@ -1,8 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
+// import "@openzeppelin/contracts/interfaces/IERC721Enumerable.sol";
+
 //TODO: implement the function inside
 interface IAINFT {
+
+    function isApprovedOrOwner(address spender, uint256 tokenId) external view returns (bool);
+    function tokenURICurrentVersion(uint256 tokenId) external view returns (uint256);
+    function setBaseURI(string memory newBaseURI) external returns (bool);
 
     ///@dev fetch the tokenURI of tokenId by certain version
     function tokenURIByVersion(uint256 tokenId, uint256 uriVersion) external view returns (string memory);

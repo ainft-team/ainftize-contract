@@ -104,10 +104,10 @@ contract AINFT721 is
         super._requireMinted(tokenId);
     }
 
-    function _isApprovedOrOwner(
+    function isApprovedOrOwner(
         address spender, 
         uint256 tokenId
-    ) internal view virtual override(ERC721) returns (bool)
+    ) public view virtual returns (bool)
     {
         return super._isApprovedOrOwner(spender, tokenId);
     }
@@ -194,7 +194,7 @@ contract AINFT721 is
         string memory newTokenURI
     ) external returns (bool) {
         require(
-            (_isApprovedOrOwner(_msgSender(), tokenId) ||
+            (isApprovedOrOwner(_msgSender(), tokenId) ||
                 hasRole(DEFAULT_ADMIN_ROLE, _msgSender())),
             "AINFT721::updateTokenURI() - not owner of tokenId or contract owner"
         );
