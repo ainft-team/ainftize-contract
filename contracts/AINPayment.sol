@@ -7,6 +7,7 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 import "./interfaces/IAINFT.sol";
 
+///@notice AINPayment address should be registered PAYMENT_ROLE in AINFT721.sol
 contract AINPayment is Ownable, ReentrancyGuard {
     IERC20 public _ain;
     IAINFT public _ainft;
@@ -30,7 +31,7 @@ contract AINPayment is Ownable, ReentrancyGuard {
         require(amount > 0, "Amount must be greater than 0");
         require(_ain.balanceOf(_msgSender()) >= amount, "Insufficient balance");
         
-        bool success = _ain.transfer(address(this), amount);
+        bool success = _ain.transfer(address(this), amount); 
         return success;
     }
 
