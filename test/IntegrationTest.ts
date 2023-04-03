@@ -19,7 +19,7 @@ import {
  } from "../typechain-types";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 
-describe("Integration test: Cloning", function () {
+describe("Integration test", function () {
   let Erc20: ERC20___factory;  
   let erc20: ERC20_;  
   let Erc721Mintable: ERC721Mintable___factory;
