@@ -145,4 +145,5 @@ describe("AINFT721Upgradeable", function () {
     });
 
   });
+
 });
