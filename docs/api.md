@@ -1,38 +1,468 @@
 # Solidity API
 
-## AINClient
+## AINFT721
 
-### unlockTime
+_AINFT721 contract_
+
+### MetadataContainer
 
 ```solidity
-uint256 unlockTime
+struct MetadataContainer {
+  address updater;
+  string metadataURI;
+}
 ```
 
-### owner
+### IS_CLONED
 
 ```solidity
-address payable owner
+bool IS_CLONED
 ```
 
-### Withdrawal
+### ORIGIN_NFT
 
 ```solidity
-event Withdrawal(uint256 amount, uint256 when)
+contract IERC721 ORIGIN_NFT
+```
+
+### PAYMENT_PLUGIN
+
+```solidity
+address PAYMENT_PLUGIN
+```
+
+### PAUSER_ROLE
+
+```solidity
+bytes32 PAUSER_ROLE
+```
+
+### MINTER_ROLE
+
+```solidity
+bytes32 MINTER_ROLE
 ```
 
 ### constructor
 
 ```solidity
-constructor(uint256 _unlockTime) public payable
+constructor(string name_, string symbol_, bool isCloned_, address originNFT_) public
+```
+
+### Cloned
+
+```solidity
+modifier Cloned()
+```
+
+### mintFromOriginInstance
+
+```solidity
+function mintFromOriginInstance(uint256 tokenId_) public
+```
+
+### mintFromOriginInstanceOnBehalf
+
+```solidity
+function mintFromOriginInstanceOnBehalf(uint256[] tokenIds_, address[] recipients_) public
+```
+
+### setPaymentContract
+
+```solidity
+function setPaymentContract(address paymentPlugin_) public
+```
+
+### supportsInterface
+
+```solidity
+function supportsInterface(bytes4 interfaceId) public view returns (bool)
+```
+
+_See {IERC4906}._
+
+### pause
+
+```solidity
+function pause() public
+```
+
+### unpause
+
+```solidity
+function unpause() public
+```
+
+### safeMint
+
+```solidity
+function safeMint(address to, uint256 tokenId) public
+```
+
+### _beforeTokenTransfer
+
+```solidity
+function _beforeTokenTransfer(address from, address to, uint256 tokenId, uint256 batchSize) internal
+```
+
+### _requireMinted
+
+```solidity
+function _requireMinted(uint256 tokenId) internal view virtual
+```
+
+_Reverts if the `tokenId` has not been minted yet._
+
+### isApprovedOrOwner
+
+```solidity
+function isApprovedOrOwner(address spender, uint256 tokenId) public view virtual returns (bool)
+```
+
+### burn
+
+```solidity
+function burn(uint256 tokenId) public
+```
+
+_Burns `tokenId`. See {ERC721-_burn}.
+
+Requirements:
+
+- The caller must own `tokenId` or be an approved operator._
+
+### _baseURI
+
+```solidity
+function _baseURI() internal view returns (string)
+```
+
+_Base URI for computing {tokenURI}. If set, the resulting URI for each
+token will be the concatenation of the `baseURI` and the `tokenId`. Empty
+by default, can be overridden in child contracts._
+
+### tokenURI
+
+```solidity
+function tokenURI(uint256 tokenId) public view returns (string)
+```
+
+_See {IERC721Metadata-tokenURI}._
+
+### _metadataStorageKey
+
+```solidity
+function _metadataStorageKey(uint256 tokenId, uint256 version) internal pure returns (bytes32)
+```
+
+_Returns the key for the metadata storage._
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | bytes32 | The metadata storage key. |
+
+### metadataStorageByVersion
+
+```solidity
+function metadataStorageByVersion(uint256 tokenId, uint256 version) public view returns (struct AINFT721.MetadataContainer)
+```
+
+_The metadata storage is a mapping of token ID to metadata._
+
+#### Return Values
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| [0] | struct AINFT721.MetadataContainer | The metadata storage. |
+
+### tokenURICurrentVersion
+
+```solidity
+function tokenURICurrentVersion(uint256 tokenId) public view returns (uint256)
+```
+
+### tokenURIByVersion
+
+```solidity
+function tokenURIByVersion(uint256 tokenId, uint256 uriVersion) public view returns (string)
+```
+
+_fetch the tokenURI of tokenId by certain version_
+
+### setBaseURI
+
+```solidity
+function setBaseURI(string newBaseURI) public returns (bool)
+```
+
+### updateTokenURI
+
+```solidity
+function updateTokenURI(uint256 tokenId, string newTokenURI) external returns (bool)
+```
+
+_version up & upload the metadata. You should call this function externally when the token is updated._
+
+### rollbackTokenURI
+
+```solidity
+function rollbackTokenURI(uint256 tokenId) external returns (bool)
+```
+
+_if you've ever updated the metadata more than once, rollback the metadata to the previous one and return true.
+if its metadata has not been updated yet or failed to update, return false_
+
+## AINFTFactory
+
+### constructor
+
+```solidity
+constructor() public
+```
+
+### cloneERC721
+
+```solidity
+function cloneERC721(contract ERC721 originalNFT_, string newName_, string newSymbol_) public returns (address)
+```
+
+### createAINFT721
+
+```solidity
+function createAINFT721(string name_, string symbol_) public returns (address)
+```
+
+### _cloneInstanceAINFT721
+
+```solidity
+function _cloneInstanceAINFT721(contract ERC721 originalNFT_, string name_, string symbol_) internal returns (address)
+```
+
+### _createInstanceAINFT721
+
+```solidity
+function _createInstanceAINFT721(string name_, string symbol_) internal returns (address)
+```
+
+### getClonedAINFTContract
+
+```solidity
+function getClonedAINFTContract() public view returns (address)
+```
+
+### getCreatedAINFTContract
+
+```solidity
+function getCreatedAINFTContract() public view returns (address)
+```
+
+## AINPayment
+
+AINPayment address should be registered PAYMENT_ROLE in AINFT721.sol
+
+### _ain
+
+```solidity
+contract IERC20 _ain
+```
+
+### _ainft
+
+```solidity
+contract IAINFT _ainft
+```
+
+### _price
+
+```solidity
+uint256[2] _price
+```
+
+### constructor
+
+```solidity
+constructor(address ainft, address ain) public
+```
+
+### setPrice
+
+```solidity
+function setPrice(uint256[2] price) external
+```
+
+### _pay
+
+```solidity
+function _pay(uint256 amount) internal returns (bool)
+```
+
+Before executing _pay(), _ain.approve(address(this), type(uint256).max) should be called by user.
+
+_Pay AIN to AINPayment contract_
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| amount | uint256 | Amount of AIN to pay |
+
+### executeUpdate
+
+```solidity
+function executeUpdate(uint256 tokenId, string newTokenURI) external returns (bool)
+```
+
+### executeRollback
+
+```solidity
+function executeRollback(uint256 tokenId) external returns (bool)
 ```
 
 ### withdraw
 
 ```solidity
-function withdraw() public
+function withdraw(uint256 amount) public returns (bool)
 ```
 
-## AINFT721
+### withdrawAll
+
+```solidity
+function withdrawAll() public returns (bool)
+```
+
+### destruct
+
+```solidity
+function destruct(string areYouSure) external payable
+```
+
+## IAINFT
+
+### isApprovedOrOwner
+
+```solidity
+function isApprovedOrOwner(address spender, uint256 tokenId) external view returns (bool)
+```
+
+### tokenURICurrentVersion
+
+```solidity
+function tokenURICurrentVersion(uint256 tokenId) external view returns (uint256)
+```
+
+### setBaseURI
+
+```solidity
+function setBaseURI(string newBaseURI) external returns (bool)
+```
+
+### tokenURIByVersion
+
+```solidity
+function tokenURIByVersion(uint256 tokenId, uint256 uriVersion) external view returns (string)
+```
+
+_fetch the tokenURI of tokenId by certain version_
+
+### updateTokenURI
+
+```solidity
+function updateTokenURI(uint256 tokenId, string newTokenURI) external returns (bool)
+```
+
+_update the new token URI and version up_
+
+### rollbackTokenURI
+
+```solidity
+function rollbackTokenURI(uint256 tokenId) external returns (bool)
+```
+
+_delete the recent tokenURI and rollback tokenURI to previous one. If the tokenId is origin, it reverts_
+
+## IERC4906
+
+https://eips.ethereum.org/EIPS/eip-4906#backwards-compatibility
+
+### MetadataUpdate
+
+```solidity
+event MetadataUpdate(uint256 _tokenId)
+```
+
+_This event emits when the metadata of a token is changed.
+So that the third-party platforms such as NFT market could
+timely update the images and related attributes of the NFT._
+
+### BatchMetadataUpdate
+
+```solidity
+event BatchMetadataUpdate(uint256 _fromTokenId, uint256 _toTokenId)
+```
+
+_This event emits when the metadata of a range of tokens is changed.
+So that the third-party platforms such as NFT market could
+timely update the images and related attributes of the NFTs._
+
+## ERC20_
+
+### constructor
+
+```solidity
+constructor(string name_, string symbol_, uint256 totalSupply_) public
+```
+
+## ERC721Mintable_
+
+### constructor
+
+```solidity
+constructor(string name_, string symbol_) public
+```
+
+### mint
+
+```solidity
+function mint(address to, uint256 tokenId) public
+```
+
+## AINFT721LogicV2
+
+this contract is only for example of how the logic contract works & interacts with proxy
+Please DO NOT USE this in production as-is.
+
+### example__resetTokenURI
+
+```solidity
+function example__resetTokenURI(uint256 tokenId) external returns (bool)
+```
+
+_execute the additional function updated to proxy contract._
+
+### logicVersion
+
+```solidity
+function logicVersion() external pure virtual returns (uint256)
+```
+
+_get the logic contract version_
+
+## AINFT721Upgradeable
+
+About design pattern, refer to https://github.com/OpenZeppelin/openzeppelin-labs/tree/master/upgradeability_using_inherited_storage
+
+_Proxy contract for AINFT721_
+
+### MetadataContainer
+
+```solidity
+struct MetadataContainer {
+  address updater;
+  string metadataURI;
+}
+```
 
 ### PAUSER_ROLE
 
@@ -52,12 +482,6 @@ bytes32 MINTER_ROLE
 bytes32 UPGRADER_ROLE
 ```
 
-### baseURI
-
-```solidity
-string baseURI
-```
-
 ### constructor
 
 ```solidity
@@ -67,18 +491,16 @@ constructor() public
 ### initialize
 
 ```solidity
-function initialize() public
+function initialize(string name_, string symbol_) public
 ```
 
-### _baseURI
+### supportsInterface
 
 ```solidity
-function _baseURI() internal view returns (string)
+function supportsInterface(bytes4 interfaceId) public view returns (bool)
 ```
 
-_Base URI for computing {tokenURI}. If set, the resulting URI for each
-token will be the concatenation of the `baseURI` and the `tokenId`. Empty
-by default, can be overridden in child contracts._
+_See {IERC4906Upgradeable}._
 
 ### pause
 
@@ -95,13 +517,31 @@ function unpause() public
 ### safeMint
 
 ```solidity
-function safeMint(address to, string uri) public
+function safeMint(address to) public
 ```
 
 ### _beforeTokenTransfer
 
 ```solidity
 function _beforeTokenTransfer(address from, address to, uint256 tokenId, uint256 batchSize) internal
+```
+
+### _isApprovedOrOwner
+
+```solidity
+function _isApprovedOrOwner(address spender, uint256 tokenId) internal view virtual returns (bool)
+```
+
+_Returns whether `spender` is allowed to manage `tokenId`.
+
+Requirements:
+
+- `tokenId` must exist._
+
+### isApprovedOrOwner
+
+```solidity
+function isApprovedOrOwner(address spender, uint256 tokenId) public view virtual returns (bool)
 ```
 
 ### _authorizeUpgrade
@@ -119,11 +559,41 @@ Normally, this function will use an xref:access.adoc[access control] modifier su
 function _authorizeUpgrade(address) internal override onlyOwner {}
 ```_
 
-### _burn
+### logicVersion
 
 ```solidity
-function _burn(uint256 tokenId) internal
+function logicVersion() external pure virtual returns (uint256)
 ```
+
+### burn
+
+```solidity
+function burn(uint256 tokenId) public
+```
+
+_Burns `tokenId`. See {ERC721-_burn}.
+
+Requirements:
+
+- The caller must own `tokenId` or be an approved operator._
+
+### _baseURI
+
+```solidity
+function _baseURI() internal view returns (string)
+```
+
+_Base URI for computing {tokenURI}. If set, the resulting URI for each
+token will be the concatenation of the `baseURI` and the `tokenId`. Empty
+by default, can be overridden in child contracts._
+
+### _requireMinted
+
+```solidity
+function _requireMinted(uint256 tokenId) internal view virtual
+```
+
+_Reverts if the `tokenId` has not been minted yet._
 
 ### tokenURI
 
@@ -131,15 +601,78 @@ function _burn(uint256 tokenId) internal
 function tokenURI(uint256 tokenId) public view returns (string)
 ```
 
-### supportsInterface
+_See {IERC721Metadata-tokenURI}._
+
+### _metadataStorageKey
 
 ```solidity
-function supportsInterface(bytes4 interfaceId) public view returns (bool)
+function _metadataStorageKey(uint256 tokenId, uint256 version) internal pure returns (bytes32)
 ```
+
+### metadataStorageByVersion
+
+```solidity
+function metadataStorageByVersion(uint256 tokenId, uint256 version) public view returns (struct AINFT721Upgradeable.MetadataContainer)
+```
+
+### tokenURICurrentVersion
+
+```solidity
+function tokenURICurrentVersion(uint256 tokenId) public view returns (uint256)
+```
+
+### tokenURIByVersion
+
+```solidity
+function tokenURIByVersion(uint256 tokenId, uint256 uriVersion) public view returns (string)
+```
+
+_fetch the tokenURI of tokenId by certain version_
 
 ### setBaseURI
 
 ```solidity
-function setBaseURI(string newBaseURI) public returns (bool)
+function setBaseURI(string newBaseURI) external returns (bool)
 ```
+
+### updateTokenURI
+
+```solidity
+function updateTokenURI(uint256 tokenId, string newTokenURI) public returns (bool)
+```
+
+_version up & upload the metadata. You should call this function externally when the token is updated._
+
+### rollbackTokenURI
+
+```solidity
+function rollbackTokenURI(uint256 tokenId) public returns (bool)
+```
+
+_if you've ever updated the metadata more than once, rollback the metadata to the previous one and return true.
+if its metadata has not been updated yet or failed to update, return false_
+
+## IERC4906Upgradeable
+
+https://eips.ethereum.org/EIPS/eip-4906#backwards-compatibility
+
+### MetadataUpdate
+
+```solidity
+event MetadataUpdate(uint256 _tokenId)
+```
+
+_This event emits when the metadata of a token is changed.
+So that the third-party platforms such as NFT market could
+timely update the images and related attributes of the NFT._
+
+### BatchMetadataUpdate
+
+```solidity
+event BatchMetadataUpdate(uint256 _fromTokenId, uint256 _toTokenId)
+```
+
+_This event emits when the metadata of a range of tokens is changed.
+So that the third-party platforms such as NFT market could
+timely update the images and related attributes of the NFTs._
 

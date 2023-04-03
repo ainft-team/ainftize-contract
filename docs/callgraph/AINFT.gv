@@ -1,0 +1,291 @@
+digraph G {
+  graph [ ratio = "auto", page = "100", compound =true, bgcolor = "#2e3e56" ];
+  node [ style = "filled", fillcolor = "#edad56", color = "#edad56", penwidth =3 ];
+  edge [ color = "#fcfcfc", penwidth =2, fontname = "helvetica Neue Ultra Light" ];
+subgraph "clusterAINFT721" {
+  graph [ label = "AINFT721", color = "#445773", fontcolor = "#f0f0f0", style = "rounded", bgcolor = "#445773" ];
+  "AINFT721.<Constructor>" [ label = "<Constructor>", color = "#FF9797", fillcolor = "#FF9797" ];
+  "AINFT721.Cloned" [ label = "Cloned", color = "#1bc6a6", shape =doubleoctagon ];
+  "AINFT721.mintFromOriginInstance" [ label = "mintFromOriginInstance", color = "#FF9797", fillcolor = "#FF9797" ];
+  "AINFT721.mintFromOriginInstanceOnBehalf" [ label = "mintFromOriginInstanceOnBehalf", color = "#FF9797", fillcolor = "#FF9797" ];
+  "AINFT721.setPaymentContract" [ label = "setPaymentContract", color = "#FF9797", fillcolor = "#FF9797" ];
+  "AINFT721.supportsInterface" [ label = "supportsInterface", color = "#FF9797", fillcolor = "#FF9797" ];
+  "AINFT721.pause" [ label = "pause", color = "#FF9797", fillcolor = "#FF9797" ];
+  "AINFT721.unpause" [ label = "unpause", color = "#FF9797", fillcolor = "#FF9797" ];
+  "AINFT721.safeMint" [ label = "safeMint", color = "#FF9797", fillcolor = "#FF9797" ];
+  "AINFT721._beforeTokenTransfer" [ label = "_beforeTokenTransfer", color = "#f2c383", fillcolor = "#f2c383" ];
+  "AINFT721._requireMinted" [ label = "_requireMinted", color = "#f2c383", fillcolor = "#f2c383" ];
+  "AINFT721.isApprovedOrOwner" [ label = "isApprovedOrOwner", color = "#FF9797", fillcolor = "#FF9797" ];
+  "AINFT721.burn" [ label = "burn", color = "#FF9797", fillcolor = "#FF9797" ];
+  "AINFT721._baseURI" [ label = "_baseURI", color = "#f2c383", fillcolor = "#f2c383" ];
+  "AINFT721.tokenURI" [ label = "tokenURI", color = "#FF9797", fillcolor = "#FF9797" ];
+  "AINFT721._metadataStorageKey" [ label = "_metadataStorageKey", color = "#f2c383", fillcolor = "#f2c383" ];
+  "AINFT721.metadataStorageByVersion" [ label = "metadataStorageByVersion", color = "#FF9797", fillcolor = "#FF9797" ];
+  "AINFT721.tokenURICurrentVersion" [ label = "tokenURICurrentVersion", color = "#FF9797", fillcolor = "#FF9797" ];
+  "AINFT721.tokenURIByVersion" [ label = "tokenURIByVersion" ];
+  "AINFT721.setBaseURI" [ label = "setBaseURI", color = "#FF9797", fillcolor = "#FF9797" ];
+  "AINFT721.updateTokenURI" [ label = "updateTokenURI", color = "#ffbdb9", fillcolor = "#ffbdb9" ];
+  "AINFT721.rollbackTokenURI" [ label = "rollbackTokenURI", color = "#ffbdb9", fillcolor = "#ffbdb9" ];
+  "AINFT721._grantRole" [ label = "_grantRole" ];
+  "AINFT721.IERC721" [ label = "IERC721" ];
+  "AINFT721.address" [ label = "address" ];
+  "AINFT721._exists" [ label = "_exists" ];
+  "AINFT721._msgSender" [ label = "_msgSender" ];
+  "AINFT721._safeMint" [ label = "_safeMint" ];
+  "AINFT721._pause" [ label = "_pause" ];
+  "AINFT721._unpause" [ label = "_unpause" ];
+  "AINFT721.MetadataUpdate" [ label = "MetadataUpdate" ];
+}
+
+subgraph "clusterAINFTFactory" {
+  graph [ label = "AINFTFactory", color = "#445773", fontcolor = "#f0f0f0", style = "rounded", bgcolor = "#445773" ];
+  "AINFTFactory.<Constructor>" [ label = "<Constructor>", color = "#FF9797", fillcolor = "#FF9797" ];
+  "AINFTFactory.cloneERC721" [ label = "cloneERC721", color = "#FF9797", fillcolor = "#FF9797" ];
+  "AINFTFactory.createAINFT721" [ label = "createAINFT721", color = "#FF9797", fillcolor = "#FF9797" ];
+  "AINFTFactory._cloneInstanceAINFT721" [ label = "_cloneInstanceAINFT721" ];
+  "AINFTFactory._createInstanceAINFT721" [ label = "_createInstanceAINFT721" ];
+  "AINFTFactory.getClonedAINFTContract" [ label = "getClonedAINFTContract", color = "#FF9797", fillcolor = "#FF9797" ];
+  "AINFTFactory.getCreatedAINFTContract" [ label = "getCreatedAINFTContract", color = "#FF9797", fillcolor = "#FF9797" ];
+  "AINFTFactory.address" [ label = "address" ];
+}
+
+subgraph "clusterAINPayment" {
+  graph [ label = "AINPayment", color = "#445773", fontcolor = "#f0f0f0", style = "rounded", bgcolor = "#445773" ];
+  "AINPayment.<Constructor>" [ label = "<Constructor>", color = "#FF9797", fillcolor = "#FF9797" ];
+  "AINPayment.setPrice" [ label = "setPrice", color = "#ffbdb9", fillcolor = "#ffbdb9" ];
+  "AINPayment._pay" [ label = "_pay", color = "#f2c383", fillcolor = "#f2c383" ];
+  "AINPayment.executeUpdate" [ label = "executeUpdate", color = "#ffbdb9", fillcolor = "#ffbdb9" ];
+  "AINPayment.executeRollback" [ label = "executeRollback", color = "#ffbdb9", fillcolor = "#ffbdb9" ];
+  "AINPayment.withdraw" [ label = "withdraw", color = "#FF9797", fillcolor = "#FF9797" ];
+  "AINPayment.withdrawAll" [ label = "withdrawAll", color = "#FF9797", fillcolor = "#FF9797" ];
+  "AINPayment.destruct" [ label = "destruct", color = "brown", fillcolor = "#ffbdb9" ];
+  "AINPayment.IERC20" [ label = "IERC20" ];
+  "AINPayment.IAINFT" [ label = "IAINFT" ];
+  "AINPayment._msgSender" [ label = "_msgSender" ];
+  "AINPayment.address" [ label = "address" ];
+  "AINPayment.owner" [ label = "owner" ];
+  "AINPayment.payable" [ label = "payable" ];
+}
+
+subgraph "clusterIERC721" {
+  graph [ label = "IERC721", color = "#e8726d", fontcolor = "#f0f0f0", style = "rounded,dashed", bgcolor = "#3b4b63" ];
+  "IERC721.ownerOf" [ label = "ownerOf" ];
+}
+
+subgraph "clusterIAINFT" {
+  graph [ label = "IAINFT", color = "#e8726d", fontcolor = "#f0f0f0", style = "rounded,dashed", bgcolor = "#3b4b63" ];
+  "IAINFT.supportsInterface" [ label = "supportsInterface" ];
+  "IAINFT._beforeTokenTransfer" [ label = "_beforeTokenTransfer" ];
+  "IAINFT._requireMinted" [ label = "_requireMinted" ];
+  "IAINFT._isApprovedOrOwner" [ label = "_isApprovedOrOwner" ];
+  "IAINFT.burn" [ label = "burn" ];
+  "IAINFT.isApprovedOrOwner" [ label = "isApprovedOrOwner" ];
+  "IAINFT.updateTokenURI" [ label = "updateTokenURI" ];
+  "IAINFT.rollbackTokenURI" [ label = "rollbackTokenURI" ];
+}
+
+subgraph "clusterCounters.Counter" {
+  graph [ label = "Counters.Counter", color = "#e8726d", fontcolor = "#f0f0f0", style = "rounded,dashed", bgcolor = "#3b4b63" ];
+  "Counters.Counter.increment" [ label = "increment" ];
+}
+
+subgraph "clustertokenId" {
+  graph [ label = "tokenId", color = "#e8726d", fontcolor = "#f0f0f0", style = "rounded,dashed", bgcolor = "#3b4b63" ];
+  "tokenId.toString" [ label = "toString" ];
+}
+
+subgraph "clusterIERC20" {
+  graph [ label = "IERC20", color = "#e8726d", fontcolor = "#f0f0f0", style = "rounded,dashed", bgcolor = "#3b4b63" ];
+  "IERC20.balanceOf" [ label = "balanceOf" ];
+  "IERC20.transferFrom" [ label = "transferFrom" ];
+  "IERC20.transfer" [ label = "transfer" ];
+}
+
+subgraph "cluster_owner" {
+  graph [ label = "_owner", color = "#e8726d", fontcolor = "#f0f0f0", style = "rounded,dashed", bgcolor = "#3b4b63" ];
+  "_owner.transfer" [ label = "transfer" ];
+}
+
+  "AINFT721.<Constructor>";
+  "AINFT721._grantRole";
+  "AINFT721.IERC721";
+  "AINFT721.address";
+  "AINFT721.mintFromOriginInstance";
+  "AINFT721._exists";
+  "IERC721.ownerOf";
+  "AINFT721._msgSender";
+  "AINFT721._safeMint";
+  "AINFT721.mintFromOriginInstanceOnBehalf";
+  "AINFT721.setPaymentContract";
+  "AINFT721.supportsInterface";
+  "IAINFT.supportsInterface";
+  "AINFT721.pause";
+  "AINFT721._pause";
+  "AINFT721.unpause";
+  "AINFT721._unpause";
+  "AINFT721.safeMint";
+  "Counters.Counter.increment";
+  "AINFT721._beforeTokenTransfer";
+  "IAINFT._beforeTokenTransfer";
+  "AINFT721._requireMinted";
+  "IAINFT._requireMinted";
+  "AINFT721.isApprovedOrOwner";
+  "IAINFT._isApprovedOrOwner";
+  "AINFT721.burn";
+  "IAINFT.burn";
+  "AINFT721.tokenURI";
+  "AINFT721.tokenURIByVersion";
+  "AINFT721._metadataStorageKey";
+  "tokenId.toString";
+  "AINFT721.metadataStorageByVersion";
+  "AINFT721.tokenURICurrentVersion";
+  "AINFT721.updateTokenURI";
+  "AINFT721.MetadataUpdate";
+  "AINFT721.rollbackTokenURI";
+  "AINFTFactory.cloneERC721";
+  "AINFTFactory.address";
+  "AINFTFactory._cloneInstanceAINFT721";
+  "AINFTFactory.createAINFT721";
+  "AINFTFactory._createInstanceAINFT721";
+  "AINPayment.<Constructor>";
+  "AINPayment.IERC20";
+  "AINPayment.IAINFT";
+  "AINPayment._pay";
+  "IERC20.balanceOf";
+  "AINPayment._msgSender";
+  "IERC20.transferFrom";
+  "AINPayment.address";
+  "AINPayment.executeUpdate";
+  "IAINFT.isApprovedOrOwner";
+  "IAINFT.updateTokenURI";
+  "AINPayment.executeRollback";
+  "IAINFT.rollbackTokenURI";
+  "AINPayment.withdraw";
+  "AINPayment.owner";
+  "IERC20.transfer";
+  "AINPayment.withdrawAll";
+  "AINPayment.destruct";
+  "AINPayment.payable";
+  "_owner.transfer";
+  "AINFT721.<Constructor>" -> "AINFT721._grantRole" [ color = "#1bc6a6" ];
+  "AINFT721.<Constructor>" -> "AINFT721._grantRole" [ color = "#1bc6a6" ];
+  "AINFT721.<Constructor>" -> "AINFT721._grantRole" [ color = "#1bc6a6" ];
+  "AINFT721.<Constructor>" -> "AINFT721._grantRole" [ color = "#1bc6a6" ];
+  "AINFT721.<Constructor>" -> "AINFT721._grantRole" [ color = "#1bc6a6" ];
+  "AINFT721.<Constructor>" -> "AINFT721._grantRole" [ color = "#1bc6a6" ];
+  "AINFT721.<Constructor>" -> "AINFT721.IERC721" [ color = "#1bc6a6" ];
+  "AINFT721.<Constructor>" -> "AINFT721.address" [ color = "#1bc6a6" ];
+  "AINFT721.<Constructor>" -> "AINFT721.address" [ color = "#1bc6a6" ];
+  "AINFT721.<Constructor>" -> "AINFT721.address" [ color = "#1bc6a6" ];
+  "AINFT721.<Constructor>" -> "AINFT721.address" [ color = "#1bc6a6" ];
+  "AINFT721.mintFromOriginInstance" -> "AINFT721._exists" [ color = "#1bc6a6" ];
+  "AINFT721.mintFromOriginInstance" -> "IERC721.ownerOf" [ color = "white" ];
+  "AINFT721.mintFromOriginInstance" -> "AINFT721._msgSender" [ color = "#1bc6a6" ];
+  "AINFT721.mintFromOriginInstance" -> "AINFT721._safeMint" [ color = "#1bc6a6" ];
+  "AINFT721.mintFromOriginInstance" -> "AINFT721._msgSender" [ color = "#1bc6a6" ];
+  "AINFT721.mintFromOriginInstanceOnBehalf" -> "AINFT721._exists" [ color = "#1bc6a6" ];
+  "AINFT721.mintFromOriginInstanceOnBehalf" -> "IERC721.ownerOf" [ color = "white" ];
+  "AINFT721.mintFromOriginInstanceOnBehalf" -> "AINFT721._safeMint" [ color = "#1bc6a6" ];
+  "AINFT721.setPaymentContract" -> "AINFT721._msgSender" [ color = "#1bc6a6" ];
+  "AINFT721.setPaymentContract" -> "AINFT721._msgSender" [ color = "#1bc6a6" ];
+  "AINFT721.setPaymentContract" -> "AINFT721.address" [ color = "#1bc6a6" ];
+  "AINFT721.supportsInterface" -> "IAINFT.supportsInterface" [ color = "white" ];
+  "AINFT721.pause" -> "AINFT721._pause" [ color = "#1bc6a6" ];
+  "AINFT721.unpause" -> "AINFT721._unpause" [ color = "#1bc6a6" ];
+  "AINFT721.safeMint" -> "Counters.Counter.increment" [ color = "white" ];
+  "AINFT721.safeMint" -> "AINFT721._safeMint" [ color = "#1bc6a6" ];
+  "AINFT721._beforeTokenTransfer" -> "IAINFT._beforeTokenTransfer" [ color = "white" ];
+  "AINFT721._requireMinted" -> "IAINFT._requireMinted" [ color = "white" ];
+  "AINFT721.isApprovedOrOwner" -> "IAINFT._isApprovedOrOwner" [ color = "white" ];
+  "AINFT721.burn" -> "IAINFT.burn" [ color = "white" ];
+  "AINFT721.tokenURI" -> "AINFT721._requireMinted" [ color = "#1bc6a6" ];
+  "AINFT721.tokenURI" -> "AINFT721.tokenURIByVersion" [ color = "#1bc6a6" ];
+  "AINFT721._metadataStorageKey" -> "tokenId.toString" [ color = "white" ];
+  "AINFT721.metadataStorageByVersion" -> "AINFT721._metadataStorageKey" [ color = "#1bc6a6" ];
+  "AINFT721.tokenURICurrentVersion" -> "AINFT721._requireMinted" [ color = "#1bc6a6" ];
+  "AINFT721.tokenURIByVersion" -> "AINFT721._requireMinted" [ color = "#1bc6a6" ];
+  "AINFT721.tokenURIByVersion" -> "tokenId.toString" [ color = "white" ];
+  "AINFT721.tokenURIByVersion" -> "AINFT721.metadataStorageByVersion" [ color = "#1bc6a6" ];
+  "AINFT721.updateTokenURI" -> "AINFT721.isApprovedOrOwner" [ color = "#1bc6a6" ];
+  "AINFT721.updateTokenURI" -> "AINFT721._msgSender" [ color = "#1bc6a6" ];
+  "AINFT721.updateTokenURI" -> "AINFT721._requireMinted" [ color = "#1bc6a6" ];
+  "AINFT721.updateTokenURI" -> "AINFT721._metadataStorageKey" [ color = "#1bc6a6" ];
+  "AINFT721.updateTokenURI" -> "AINFT721._msgSender" [ color = "#1bc6a6" ];
+  "AINFT721.updateTokenURI" -> "AINFT721.MetadataUpdate" [ color = "#1bc6a6" ];
+  "AINFT721.rollbackTokenURI" -> "AINFT721.isApprovedOrOwner" [ color = "#1bc6a6" ];
+  "AINFT721.rollbackTokenURI" -> "AINFT721._msgSender" [ color = "#1bc6a6" ];
+  "AINFT721.rollbackTokenURI" -> "AINFT721._requireMinted" [ color = "#1bc6a6" ];
+  "AINFT721.rollbackTokenURI" -> "AINFT721._metadataStorageKey" [ color = "#1bc6a6" ];
+  "AINFT721.rollbackTokenURI" -> "AINFT721.MetadataUpdate" [ color = "#1bc6a6" ];
+  "AINFTFactory.cloneERC721" -> "AINFTFactory.address" [ color = "#1bc6a6" ];
+  "AINFTFactory.cloneERC721" -> "AINFTFactory.address" [ color = "#1bc6a6" ];
+  "AINFTFactory.cloneERC721" -> "AINFTFactory._cloneInstanceAINFT721" [ color = "#1bc6a6" ];
+  "AINFTFactory.cloneERC721" -> "AINFTFactory.address" [ color = "#1bc6a6" ];
+  "AINFTFactory.createAINFT721" -> "AINFTFactory._createInstanceAINFT721" [ color = "#1bc6a6" ];
+  "AINFTFactory.createAINFT721" -> "AINFTFactory.address" [ color = "#1bc6a6" ];
+  "AINFTFactory._cloneInstanceAINFT721" -> "AINFTFactory.address" [ color = "#1bc6a6" ];
+  "AINFTFactory._cloneInstanceAINFT721" -> "AINFTFactory.address" [ color = "#1bc6a6" ];
+  "AINFTFactory._createInstanceAINFT721" -> "AINFTFactory.address" [ color = "#1bc6a6" ];
+  "AINFTFactory._createInstanceAINFT721" -> "AINFTFactory.address" [ color = "#1bc6a6" ];
+  "AINPayment.<Constructor>" -> "AINPayment.IERC20" [ color = "#1bc6a6" ];
+  "AINPayment.<Constructor>" -> "AINPayment.IAINFT" [ color = "#1bc6a6" ];
+  "AINPayment._pay" -> "IERC20.balanceOf" [ color = "white" ];
+  "AINPayment._pay" -> "AINPayment._msgSender" [ color = "#1bc6a6" ];
+  "AINPayment._pay" -> "IERC20.transferFrom" [ color = "white" ];
+  "AINPayment._pay" -> "AINPayment._msgSender" [ color = "#1bc6a6" ];
+  "AINPayment._pay" -> "AINPayment.address" [ color = "#1bc6a6" ];
+  "AINPayment.executeUpdate" -> "IAINFT.isApprovedOrOwner" [ color = "white" ];
+  "AINPayment.executeUpdate" -> "AINPayment._msgSender" [ color = "#1bc6a6" ];
+  "AINPayment.executeUpdate" -> "AINPayment._pay" [ color = "#1bc6a6" ];
+  "AINPayment.executeUpdate" -> "IAINFT.updateTokenURI" [ color = "white" ];
+  "AINPayment.executeRollback" -> "IAINFT.isApprovedOrOwner" [ color = "white" ];
+  "AINPayment.executeRollback" -> "AINPayment._msgSender" [ color = "#1bc6a6" ];
+  "AINPayment.executeRollback" -> "AINPayment._pay" [ color = "#1bc6a6" ];
+  "AINPayment.executeRollback" -> "IAINFT.rollbackTokenURI" [ color = "white" ];
+  "AINPayment.withdraw" -> "AINPayment.owner" [ color = "#1bc6a6" ];
+  "AINPayment.withdraw" -> "AINPayment.address" [ color = "#1bc6a6" ];
+  "AINPayment.withdraw" -> "IERC20.balanceOf" [ color = "white" ];
+  "AINPayment.withdraw" -> "AINPayment.address" [ color = "#1bc6a6" ];
+  "AINPayment.withdraw" -> "IERC20.transfer" [ color = "white" ];
+  "AINPayment.withdraw" -> "AINPayment.owner" [ color = "#1bc6a6" ];
+  "AINPayment.withdrawAll" -> "AINPayment.owner" [ color = "#1bc6a6" ];
+  "AINPayment.withdrawAll" -> "AINPayment.address" [ color = "#1bc6a6" ];
+  "AINPayment.withdrawAll" -> "IERC20.balanceOf" [ color = "white" ];
+  "AINPayment.withdrawAll" -> "AINPayment.address" [ color = "#1bc6a6" ];
+  "AINPayment.withdrawAll" -> "IERC20.transfer" [ color = "white" ];
+  "AINPayment.withdrawAll" -> "AINPayment.owner" [ color = "#1bc6a6" ];
+  "AINPayment.destruct" -> "AINPayment.owner" [ color = "#1bc6a6" ];
+  "AINPayment.destruct" -> "AINPayment.address" [ color = "#1bc6a6" ];
+  "AINPayment.destruct" -> "AINPayment.withdrawAll" [ color = "#1bc6a6" ];
+  "AINPayment.destruct" -> "AINPayment.payable" [ color = "#1bc6a6" ];
+  "AINPayment.destruct" -> "AINPayment.owner" [ color = "#1bc6a6" ];
+  "AINPayment.destruct" -> "AINPayment.address" [ color = "#1bc6a6" ];
+  "AINPayment.destruct" -> "_owner.transfer" [ color = "white" ];
+
+
+rankdir=LR
+node [shape=plaintext]
+subgraph cluster_01 { 
+label = "Legend";
+key [label=<<table border="0" cellpadding="2" cellspacing="0" cellborder="0">
+  <tr><td align="right" port="i1">Internal Call</td></tr>
+  <tr><td align="right" port="i2">External Call</td></tr>
+  <tr><td align="right" port="i3">Defined Contract</td></tr>
+  <tr><td align="right" port="i4">Undefined Contract</td></tr>
+  </table>>]
+key2 [label=<<table border="0" cellpadding="2" cellspacing="0" cellborder="0">
+  <tr><td port="i1">&nbsp;&nbsp;&nbsp;</td></tr>
+  <tr><td port="i2">&nbsp;&nbsp;&nbsp;</td></tr>
+  <tr><td port="i3" bgcolor="#445773">&nbsp;&nbsp;&nbsp;</td></tr>
+  <tr><td port="i4">
+    <table border="1" cellborder="0" cellspacing="0" cellpadding="7" color="#e8726d">
+      <tr>
+       <td></td>
+      </tr>
+     </table>
+  </td></tr>
+  </table>>]
+key:i1:e -> key2:i1:w [color="#1bc6a6"]
+key:i2:e -> key2:i2:w [color="white"]
+}
+}
