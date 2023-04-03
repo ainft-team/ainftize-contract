@@ -8,6 +8,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/interfaces/IERC721.sol";
 
 import "./interfaces/IERC4906.sol";
 import "./interfaces/IAINFT.sol";
@@ -32,9 +33,9 @@ contract AINFT721 is
     }
     bool public immutable IS_CLONED;
     IERC721 public immutable ORIGIN_NFT;
+    address public PAYMENT_PLUGIN;
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
-    bytes32 public constant PAYMENT_ROLE = keccak256("PAYMENT_ROLE");
 
     Counters.Counter private _tokenIdCounter;
     string private baseURI;
@@ -43,24 +44,24 @@ contract AINFT721 is
 
     constructor(string memory name_, string memory symbol_, bool isCloned_, address originNFT_) ERC721(name_, symbol_) {
         if (isCloned_) {
-            _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
-            _grantRole(PAUSER_ROLE, _msgSender());
-            _grantRole(MINTER_ROLE, _msgSender());
-            _grantRole(MINTER_ROLE, _msgSender());
+            //FIXME: need to use tx.origin?
+            _grantRole(DEFAULT_ADMIN_ROLE, tx.origin);
+            _grantRole(PAUSER_ROLE, tx.origin);
+            _grantRole(MINTER_ROLE, tx.origin);
 
             
         } else {
             //FIXME: the originNFT contract address should not be ROLED
-            _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
-            _grantRole(PAUSER_ROLE, _msgSender());
-            _grantRole(MINTER_ROLE, _msgSender());
-            _grantRole(PAYMENT_ROLE, originNFT_);
-
+            _grantRole(DEFAULT_ADMIN_ROLE, tx.origin);
+            _grantRole(PAUSER_ROLE, tx.origin);
+            _grantRole(MINTER_ROLE, tx.origin);
         }
         ORIGIN_NFT = IERC721(originNFT_);
         IS_CLONED = isCloned_;
-        require(address(ORIGIN_NFT) == address(0) && !IS_CLONED, "If AINFT721 is created first time, the originNFT_ should not be SET.");
-        require(address(ORIGIN_NFT) != address(0) && IS_CLONED, "If AINFT721 is cloned by something, the originNFT_ should be SET.");
+        require((address(ORIGIN_NFT) == address(0) && !IS_CLONED) ||
+                (address(ORIGIN_NFT) != address(0) && IS_CLONED), 
+                "If AINFT721 is created first time, the originNFT_ should not be SET. \
+                \n If AINFT721 is cloned by something, the originNFT_ should be SET.");
     }
 
     modifier Cloned () {
@@ -72,12 +73,13 @@ contract AINFT721 is
         uint256 tokenId_
     ) public Cloned {
         require(!_exists(tokenId_), "The tokenId_ is already minted or cloned");
-        require(_msgSender() == ORIGIN_NFT.ownerOf(tokenId_), "The sender should be the holder of origin NFT.");
+        address originOwner = ORIGIN_NFT.ownerOf(tokenId_);
+        require(_msgSender() == originOwner, "The sender should be the holder of origin NFT.");
         _safeMint(_msgSender(), tokenId_);
 
     }
     
-    function mintOnBehalfOriginInstance(
+    function mintFromOriginInstanceOnBehalf(
         uint256[] calldata tokenIds_,
         address[] calldata recipients_
     ) public Cloned onlyRole(MINTER_ROLE) {
@@ -88,7 +90,10 @@ contract AINFT721 is
         }
     }
 
-
+    function setPaymentContract(address paymentPlugin_) public onlyRole(DEFAULT_ADMIN_ROLE) {
+        require(_msgSender() == tx.origin && _msgSender() != address(0), "Only EOA can set payment contract.");
+        PAYMENT_PLUGIN = paymentPlugin_;
+    }
 
     /**
      * @dev See {IERC4906}.
@@ -238,10 +243,10 @@ contract AINFT721 is
     function updateTokenURI(
         uint256 tokenId,
         string memory newTokenURI
-    ) external onlyRole(PAYMENT_ROLE) returns (bool) {
+    ) external returns (bool) {
         require(
-            (isApprovedOrOwner(_msgSender(), tokenId) ||
-                hasRole(PAYMENT_ROLE, msg.sender)),
+            (isApprovedOrOwner(tx.origin, tokenId) ||
+             PAYMENT_PLUGIN == _msgSender()),
             "AINFT721::updateTokenURI() - only payment contract can call this funciton."
         );
         _requireMinted(tokenId);
@@ -261,10 +266,10 @@ contract AINFT721 is
      * @dev if you've ever updated the metadata more than once, rollback the metadata to the previous one and return true.
      * if its metadata has not been updated yet or failed to update, return false
      */
-    function rollbackTokenURI(uint256 tokenId) public onlyRole(PAYMENT_ROLE) returns (bool) {
+    function rollbackTokenURI(uint256 tokenId) external returns (bool) {
         require(
-            (_msgSender() == ownerOf(tokenId)) ||
-                hasRole(PAYMENT_ROLE, msg.sender),
+            (isApprovedOrOwner(tx.origin, tokenId) ||
+             PAYMENT_PLUGIN == _msgSender()),
             "AINFT721::rollbackTokenURI() - only payment contract can call this function."
         );
         _requireMinted(tokenId);
