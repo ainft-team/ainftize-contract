@@ -184,6 +184,10 @@ contract AINFT721 is
         return tokenURIByVersion(tokenId, currentVersion);
     }
 
+    /**
+     * @dev Returns the key for the metadata storage.
+     * @return The metadata storage key.
+     */
     function _metadataStorageKey(
         uint256 tokenId,
         uint256 version
@@ -191,6 +195,10 @@ contract AINFT721 is
         return keccak256(abi.encodePacked(tokenId.toString(), "AINFT delimeter", version));
     }
 
+    /**
+     * @dev The metadata storage is a mapping of token ID to metadata.
+     * @return The metadata storage.
+     */
     function metadataStorageByVersion(
         uint256 tokenId,
         uint256 version

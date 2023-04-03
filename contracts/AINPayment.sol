@@ -66,7 +66,6 @@ contract AINPayment is Ownable, ReentrancyGuard {
         return success;
     }
     function withdrawAll() public onlyOwner nonReentrant returns(bool) {
-        //FIXME: owner should precede approveERC20ToOwner() before calling this function
         require(owner() != address(0), "AINPayment::withdrawAll, Owner should be set");
 
         uint256 balance = _ain.balanceOf(address(this));
@@ -77,7 +76,6 @@ contract AINPayment is Ownable, ReentrancyGuard {
     }
 
     function destruct(string memory areYouSure) external payable onlyOwner {
-        //FIXME
         require(owner() != address(0), "AINPayment::destruct, Owner should be set");
         require(keccak256(abi.encodePacked(areYouSure)) == keccak256(abi.encodePacked("DELETE")), "Please type DELETE if you really want to destruct");
 
