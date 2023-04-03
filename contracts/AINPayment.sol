@@ -28,37 +28,23 @@ contract AINPayment is Ownable, ReentrancyGuard {
         _price[1] = price[1];
     }
 
-    function _pay(uint256 amount) internal nonReentrant returns(bool) {
-        require(amount > 0, "Amount must be greater than 0");
-        require(_ain.balanceOf(_msgSender()) >= amount, "Insufficient balance");
-        require(_ain.allowance(_msgSender(), address(this)) >= amount, "Insufficient allowancessss");
 
-        bool success = _ain.transferFrom(_msgSender(), address(this), amount); 
+    /**
+     * @dev Pay AIN to AINPayment contract
+     * @param amount Amount of AIN to pay
+     * @notice Before executing _pay(), _ain.approve(address(this), type(uint256).max) should be called by user.
+     * */
+    function _pay(uint256 amount) internal nonReentrant returns(bool) {
+        require(amount > 0, "AINPayment::_pay, Amount must be greater than 0");
+        require(_ain.balanceOf(_msgSender()) >= amount, "AINPayment::_pay, Insufficient balance");
+
+        bool success = _ain.transferFrom(_msgSender(), address(this), amount);
         return success;
     }
 
-    /**
-     * @dev Before executing _pay(), approveERC20() should be called. They cannot execute in a single transaction.  
-     * @param spender - address of AINPayment contract
-     * */
-    function approveERC20(address spender) public returns (bool) {
-        //FIXME: in hardhat test framework, approveERC20(spender) can be called but does not reflect the state of AIN
-        // Thus, the approveERC20(spender) does not work in practice
-        // If not, use ERC20's approve function directly.
-        
-        _ain.approve(spender, type(uint256).max);        
-        console.log("Allow successful, %s", _ain.allowance(_msgSender(), spender));
-        return true;
-    }   
-
     function executeUpdate(uint256 tokenId, string memory newTokenURI) external returns(bool) {
         require(_ainft.isApprovedOrOwner(_msgSender(), tokenId), "AINPayment::executeUpdate, owner of AINFT or holder only call this");
-        console.log("AIN address: %s", address(_ain));
-        console.log("Allow successful, %s", _ain.allowance(_msgSender(), address(this)));
-
-        console.log("The sender is %s, balance is %s", _msgSender(), _ain.balanceOf(_msgSender()));
-
-        require(_pay(_price[0]), "Insufficient AIN");
+        require(_pay(_price[0]), "AINPayment::executeUpdate, Insufficient AIN");
         bool success = _ainft.updateTokenURI(tokenId, newTokenURI);
         return success;
 
@@ -66,7 +52,7 @@ contract AINPayment is Ownable, ReentrancyGuard {
 
     function executeRollback(uint256 tokenId) external returns(bool) {
         require(_ainft.isApprovedOrOwner(_msgSender(), tokenId), "AINPayment::executeRollback, owner of AINFT or holder only call this");
-        require(_pay(_price[1]), "Insufficient AIN");
+        require(_pay(_price[1]), "AINPayment::executeRollback, Insufficient AIN");
 
         bool success = _ainft.rollbackTokenURI(tokenId);
         return success;
@@ -75,26 +61,25 @@ contract AINPayment is Ownable, ReentrancyGuard {
 
     function withdraw(uint256 amount) public onlyOwner nonReentrant returns(bool) {
         require(owner() != address(0), "Owner should be set");
-        require(_ain.balanceOf(address(this)) >= amount, "Insufficient balance");
+        require(_ain.balanceOf(address(this)) >= amount, "AINPayment::withdraw, Insufficient AIN");
 
-        _ain.approve(owner(), amount);
-        require(_ain.allowance(address(this), owner()) >= amount, "Insufficient amount is allowed");
-        bool success = _ain.transferFrom(address(this), owner(), amount);
+        bool success = _ain.transfer(owner(), amount);
         return success;
     }
-
     function withdrawAll() public onlyOwner nonReentrant returns(bool) {
-        require(owner() != address(0), "Owner should be set");
+        //FIXME: owner should precede approveERC20ToOwner() before calling this function
+        require(owner() != address(0), "AINPayment::withdrawAll, Owner should be set");
 
-        uint256 stackedAin = _ain.balanceOf(address(this));
-        _ain.approve(owner(), stackedAin);
-        require(_ain.allowance(address(this), owner()) >= stackedAin, "Insufficient amount is allowed");
-        bool success = _ain.transferFrom(address(this), owner(), stackedAin);
+        uint256 balance = _ain.balanceOf(address(this));
+        require(balance > 0, "AINPayment::withdrawAll, No AIN tokens to withdraw");
+
+        bool success = _ain.transfer(owner(), balance);
         return success;
     }
 
     function destruct(string memory areYouSure) external payable onlyOwner {
-        require(owner() != address(0), "Owner should be set");
+        //FIXME
+        require(owner() != address(0), "AINPayment::destruct, Owner should be set");
         require(keccak256(abi.encodePacked(areYouSure)) == keccak256(abi.encodePacked("DELETE")), "Please type DELETE if you really want to destruct");
 
         // 1. withdraw all AIN to owner        
@@ -103,7 +88,7 @@ contract AINPayment is Ownable, ReentrancyGuard {
         // 2. withdraw all ethers stored in this contract to owner
         address payable _owner = payable(owner());
         uint256 balance = address(this).balance;
-        require(balance > 0, "The contract has no funds to withdraw");
+        require(balance > 0, "AINPayment::destruct, The contract has no funds to withdraw");
         _owner.transfer(balance);
     }
 }

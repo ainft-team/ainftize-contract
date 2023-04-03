@@ -42,6 +42,10 @@ describe("Integration test: Cloning", function () {
   beforeEach(async function () {
     const provider = new ethers.providers.JsonRpcProvider();
     [owner, minter, pauser, payer, ...addrs] = await ethers.getSigners();
+    console.log("owner: ", owner.address);
+    console.log("minter: ", minter.address);
+    console.log("pauser: ", pauser.address);
+    console.log("payer: ", payer.address);
 
     Erc20 = await ethers.getContractFactory("ERC20_");
     erc20 = await Erc20.deploy("AI Network", "AIN", BigNumber.from('10000000000000000000000'));    
@@ -75,12 +79,12 @@ describe("Integration test: Cloning", function () {
       const ainft721Address = await ainftfactory.getClonedAINFTContract();
       ainft721 = await ethers.getContractAt("AINFT721", ainft721Address, owner);
       console.log("AINFT721 Contract At: ", ainft721Address);
-      console.log(await ainft721.hasRole(ainft721.DEFAULT_ADMIN_ROLE(), owner.address));
+      await expect(ainft721.hasRole(ainft721.DEFAULT_ADMIN_ROLE(), owner.address)).not.to.be.reverted;
+      expect(await ainft721.IS_CLONED()).to.equal(true);  
 
       // grant roles to ainft721
       await ainft721.grantRole(ainft721.PAUSER_ROLE(), pauser.address);
       await ainft721.grantRole(ainft721.MINTER_ROLE(), minter.address);
-      expect(await ainft721.IS_CLONED()).to.equal(true);  
 
       // set Base URI
       const baseURI = "https://ainetwork.ai/ainft/";
@@ -133,12 +137,12 @@ describe("Integration test: Cloning", function () {
       const ainft721Address = await ainftfactory.getCreatedAINFTContract();
       ainft721 = await ethers.getContractAt("AINFT721", ainft721Address, owner);
       console.log("AINFT721 Contract At: ", ainft721Address);
-      console.log(await ainft721.hasRole(ainft721.DEFAULT_ADMIN_ROLE(), owner.address));
+      await expect(ainft721.hasRole(ainft721.DEFAULT_ADMIN_ROLE(), owner.address)).not.to.be.reverted;
+      expect(await ainft721.IS_CLONED()).to.equal(false);
 
       // grant roles to ainft721
       await ainft721.grantRole(ainft721.PAUSER_ROLE(), pauser.address);
       await ainft721.grantRole(ainft721.MINTER_ROLE(), minter.address);
-      expect(await ainft721.IS_CLONED()).to.equal(false);
 
       const tokenId_owner = 0;
       const tokenId_minter = 1;
@@ -163,13 +167,90 @@ describe("Integration test: Cloning", function () {
       //create ainft721 contract address
       const ainft721Address = await ainftfactory.getCreatedAINFTContract();
       ainft721 = await ethers.getContractAt("AINFT721", ainft721Address, owner);
+      expect(await ainft721.hasRole(ainft721.DEFAULT_ADMIN_ROLE(), owner.address)).to.equal(true);
+      expect(await ainft721.IS_CLONED()).to.equal(false);
       console.log("AINFT721 Contract At: ", ainft721Address);
-      console.log(await ainft721.hasRole(ainft721.DEFAULT_ADMIN_ROLE(), owner.address));
 
       // grant roles to ainft721
-      await ainft721.grantRole(ainft721.PAUSER_ROLE(), pauser.address);
-      await ainft721.grantRole(ainft721.MINTER_ROLE(), minter.address);
+      await expect(ainft721.grantRole(ainft721.PAUSER_ROLE(), pauser.address)).not.to.be.reverted;
+      await expect(ainft721.grantRole(ainft721.MINTER_ROLE(), minter.address)).not.to.be.reverted;
+
+      // set Base URI
+      const baseURI = "https://ainetwork.ai/ainft/";
+      await expect(ainft721.setBaseURI(baseURI)).not.to.be.reverted;
+
+      // Create AINPayment
+      ainpayment = await Ainpayment.deploy(ainft721.address, erc20.address);
+      await ainpayment.deployed();
+      console.log("AINPayment Contract At: ", ainpayment.address);
+      
+      // Connect AINPayment to AINFT721
+      await expect(ainft721.connect(owner).setPaymentContract(ainpayment.address)).not.to.be.reverted;
+      expect(await ainft721.PAYMENT_PLUGIN()).to.equal(ainpayment.address);
+
+      // setPrice to AINPayment
+      const [updatedPrice, rollbackPrice] = [1, 2];
+      await expect(ainpayment.connect(owner).setPrice([updatedPrice, rollbackPrice])).not.to.be.reverted; // update_price, rollback_price
+      expect(await ainpayment._price(0)).to.equal(updatedPrice);
+      expect(await ainpayment._price(1)).to.equal(rollbackPrice);
+
+      // executeUpdate AINFT721 via AINPayment
+      const [tokenId_owner, tokenId_minter, tokenId_another1, tokenId_another2] = [0, 1, 2, 3];
+      const newTokenURI_0 = "https://ainetwork.ai/ainft/0-v2";
+
+      // mint AINFT #0, #1
+      await expect(ainft721.connect(owner).safeMint(owner.address, tokenId_owner)).not.to.be.reverted;
+      await expect(ainft721.connect(minter).safeMint(minter.address, tokenId_minter)).not.to.be.reverted;
+      
+      // Cannot executeUpdate if not token holder
+      await expect(ainpayment.connect(addrs[0]).executeUpdate(tokenId_owner, newTokenURI_0)).to.be.reverted;
+
+      // Can executeUpdate if token holder
+      // approve from owner to AINPayment to give permission of AIN
+      // decrease owner's AIN balance
+      // update the owner's tokenId of AINFT721 tokenURI
+      const ownerInitBalance = await erc20.balanceOf(await owner.getAddress());
+      await expect(erc20.connect(owner).approve(ainpayment.address, updatedPrice)).not.to.be.reverted;
+      expect(await erc20.allowance(owner.address, ainpayment.address)).to.equal(updatedPrice);
+      await expect(ainpayment.connect(owner).executeUpdate(tokenId_owner, newTokenURI_0)).not.to.be.reverted;
+      const ownerUpdatedBalance = await erc20.balanceOf(await owner.getAddress());
+      expect(ownerInitBalance.sub(ownerUpdatedBalance)).to.equal(updatedPrice);
+      await expect(ainft721.connect(owner).tokenURI(tokenId_owner)).to.eventually.equal(newTokenURI_0);
+
+            
+      // Cannot rollbackUpdate if not token holder
+      await expect(ainpayment.connect(addrs[0]).executeRollback(tokenId_owner)).to.be.reverted;
+
+      // Can rollbackUpdate if token holder
+      // decrease owner's AIN balance
+      // rollback the owner's tokenId of AINFT721 tokenURI
+      await expect(erc20.connect(owner).approve(ainpayment.address, rollbackPrice)).not.to.be.reverted;
+      expect(await erc20.allowance(owner.address, ainpayment.address)).to.equal(rollbackPrice);
+      await expect(ainpayment.connect(owner).executeRollback(tokenId_owner)).not.to.be.reverted;
+      const ownerRollbackBalance = await erc20.balanceOf(await owner.getAddress());
+      expect(ownerUpdatedBalance.sub(ownerRollbackBalance).toNumber()).to.equal(rollbackPrice);
+      await expect(ainft721.connect(owner).tokenURI(tokenId_owner)).to.eventually.equal("https://ainetwork.ai/ainft/0"); // default tokenURI
+    });
+  });
+
+  describe("AINPayment destruction", function () {
+    let ainft721: AINFT721;
+    let ainpayment: AINPayment;
+
+    beforeEach(async function () {
+      const ainftfactory_tx = await ainftfactory.connect(owner).createAINFT721("AINFT721", "AINFT");
+      await ainftfactory_tx.wait(1);
+
+      //create ainft721 contract address
+      const ainft721Address = await ainftfactory.getCreatedAINFTContract();
+      ainft721 = await ethers.getContractAt("AINFT721", ainft721Address, owner);
+      console.log("AINFT721 Contract At: ", ainft721Address);
+      expect(await ainft721.hasRole(ainft721.DEFAULT_ADMIN_ROLE(), owner.address)).to.equal(true);
       expect(await ainft721.IS_CLONED()).to.equal(false);
+
+      // grant roles to ainft721
+      await expect(ainft721.grantRole(ainft721.PAUSER_ROLE(), pauser.address)).not.to.be.reverted;
+      await expect(ainft721.grantRole(ainft721.MINTER_ROLE(), minter.address)).not.to.be.reverted;
 
       // set Base URI
       const baseURI = "https://ainetwork.ai/ainft/";
@@ -186,51 +267,100 @@ describe("Integration test: Cloning", function () {
       await ainft721.connect(owner).setPaymentContract(ainpayment.address);
       expect(await ainft721.PAYMENT_PLUGIN()).to.equal(ainpayment.address);
 
-      // setPrice to AINPayment
-      const [updatedPrice, rollbackPrice] = [1, 2];
-      await expect(ainpayment.connect(owner).setPrice([updatedPrice, rollbackPrice])).not.to.be.reverted; // update_price, rollback_price
-      expect(await ainpayment._price(0)).to.equal(updatedPrice);
-      expect(await ainpayment._price(1)).to.equal(rollbackPrice);
+      // Give 100 AIN and 1 ETH to AINPayment
+      await erc20.connect(owner).transfer(ainpayment.address, ethers.utils.parseEther("100"));
+      await ethers.provider.send("hardhat_setBalance", [ainpayment.address, "0xde0b6b3a7640000"]); // 1 ETH
+    });
 
-      // executeUpdate AINFT721 via AINPayment
-      const tokenId_owner = 0;
-      const tokenId_minter = 1;
-      const tokenId_another1 = 2;
-      const tokenId_another2 = 3;
-      const newTokenURI_0 = "https://ainetwork.ai/ainft/0-v2";
-
-      // mint AINFT #0, #1
-      await expect(ainft721.connect(owner).safeMint(owner.address, tokenId_owner)).not.to.be.reverted;
-      await expect(ainft721.connect(minter).safeMint(minter.address, tokenId_minter)).not.to.be.reverted;
+    it("should withdraw AINPayment", async function () {
+      // owner withdraw all AINPayment
+      const [ownerInitAIN, ownerInitETH] = await Promise.all([
+        erc20.balanceOf(await owner.getAddress()),
+        ethers.provider.getBalance(await owner.getAddress())
+      ]);
+      const [ainpaymentInitAIN, ainpaymentInitETH] = await Promise.all([
+        erc20.balanceOf(ainpayment.address),
+        ethers.provider.getBalance(ainpayment.address)
+      ]);
       
-      // Cannot executeUpdate if not token holder
-      await expect(ainpayment.connect(addrs[0]).executeUpdate(tokenId_owner, newTokenURI_0)).to.be.reverted;
+      await expect(ainpayment.connect(owner).withdraw(1)).not.to.be.reverted;
+      await expect(ainpayment.connect(owner).withdrawAll()).not.to.be.reverted;
+      
+      const [ownerUpdatedAIN, ownerUpdatedETH] = await Promise.all([
+        erc20.balanceOf(await owner.getAddress()),
+        ethers.provider.getBalance(await owner.getAddress())
+      ]);
+      const [ainpaymentUpdatedAIN, ainpaymentUpdatedETH] = await Promise.all([
+        erc20.balanceOf(ainpayment.address),
+        ethers.provider.getBalance(ainpayment.address)
+      ]);
 
-      // Can executeUpdate if token holder and decrease the AIN
-      expect(erc20.address).to.equal(await ainpayment._ain());
-      const ownerInitBalance = await erc20.balanceOf(await owner.getAddress());
-   
-      // FIXME: If I directly call erc20.approve, it works. But if I call ainpayment.approveERC20, it fails.
-      await erc20.connect(owner).approve(ainpayment.address, updatedPrice);
-      // expect(await ainpayment.connect(owner).approveERC20(ainpayment.address, updatedPrice)).to.equal(true);
+      expect(ownerInitAIN.add(ainpaymentInitAIN)).to.equal(ownerUpdatedAIN);
+      expect(ownerUpdatedETH.sub(ainpaymentInitETH)).to.lessThan(ownerInitETH);
+      console.log("Before balance of AinPayment(AIN:ETH): ", ainpaymentInitAIN.toString(), ainpaymentInitETH.toString());
+      console.log("After balance of AinPayment(AIN:ETH): ", ainpaymentUpdatedAIN.toString(), ainpaymentUpdatedETH.toString());
+    });
+    it("should not withdraw AINPayment except owner", async function () {
+      // minter tries to withdraw all AINPayment
+      const [minterInitAIN, minterInitETH] = await Promise.all([
+        erc20.balanceOf(await minter.getAddress()),
+        ethers.provider.getBalance(await minter.getAddress())
+      ]);
+      const [ainpaymentInitAIN, ainpaymentInitETH] = await Promise.all([
+        erc20.balanceOf(ainpayment.address),
+        ethers.provider.getBalance(ainpayment.address)
+      ]);
+      
+      await expect(ainpayment.connect(minter).withdraw(1)).to.be.reverted;
+      await expect(ainpayment.connect(minter).withdrawAll()).to.be.reverted;
+      
+    });
 
-      await expect(ainpayment.connect(owner).executeUpdate(tokenId_owner, newTokenURI_0)).not.to.be.reverted;
-      const ownerUpdatedBalance = await erc20.balanceOf(await owner.getAddress());
-      expect(ownerInitBalance.sub(ownerUpdatedBalance).toNumber()).to.equal(updatedPrice);
-      await expect(ainft721.connect(owner).tokenURI(tokenId_owner)).to.eventually.equal(newTokenURI_0);
+    it("should destroy AINPayment", async function () {
+      // destroy AINPayment
+      const [ownerInitAIN, ownerInitETH] = await Promise.all([
+        erc20.balanceOf(await owner.getAddress()),
+        ethers.provider.getBalance(await owner.getAddress())
+      ]);
+      const [ainpaymentInitAIN, ainpaymentInitETH] = await Promise.all([
+        erc20.balanceOf(ainpayment.address),
+        ethers.provider.getBalance(ainpayment.address)
+      ]);
+      
+      //destruct AINPayment
+      await expect(ainpayment.connect(owner).destruct("NOTDELETE")).to.be.reverted; // revert if not "DELETE"
+      await expect(ainpayment.connect(owner).destruct("DELETE")).not.to.be.reverted;
+      
+      const [ownerUpdatedAIN, ownerUpdatedETH] = await Promise.all([
+        erc20.balanceOf(await owner.getAddress()),
+        ethers.provider.getBalance(await owner.getAddress())
+      ]);
+      const [ainpaymentUpdatedAIN, ainpaymentUpdatedETH] = await Promise.all([
+        erc20.balanceOf(ainpayment.address),
+        ethers.provider.getBalance(ainpayment.address)
+      ]);
 
-            
-      // Cannot rollbackUpdate if not token holder
-      await expect(ainpayment.connect(addrs[0]).executeRollback(tokenId_owner)).to.be.reverted;
+      expect(ownerInitAIN.add(ainpaymentInitAIN)).to.equal(ownerUpdatedAIN);
+      expect(ownerUpdatedETH.sub(ainpaymentInitETH)).to.lessThan(ownerInitETH);
+      console.log("Before balance of AinPayment(AIN:ETH): ", ainpaymentInitAIN.toString(), ainpaymentInitETH.toString());
+      console.log("After balance of AinPayment(AIN:ETH): ", ainpaymentUpdatedAIN.toString(), ainpaymentUpdatedETH.toString());
+    
+    });
 
-      // Can rollbackUpdate if token holder
-      await erc20.connect(owner).approve(ainpayment.address, rollbackPrice);
-      console.log(await erc20.allowance(owner.address, ainpayment.address));
-      await expect(ainpayment.connect(owner).executeRollback(tokenId_owner)).not.to.be.reverted;
-      const ownerRollbackBalance = await erc20.balanceOf(await owner.getAddress());
-      expect(ownerUpdatedBalance.sub(ownerRollbackBalance).toNumber()).to.equal(rollbackPrice);
-      await expect(ainft721.connect(owner).tokenURI(tokenId_owner)).to.eventually.equal("https://ainetwork.ai/ainft/0");
+    it("should not destroy AINPayment except owner", async function () {
+      // destroy AINPayment from minter
+      const [minterInitAIN, minterInitETH] = await Promise.all([
+        erc20.balanceOf(await minter.getAddress()),
+        ethers.provider.getBalance(await minter.getAddress())
+      ]);
+      const [ainpaymentInitAIN, ainpaymentInitETH] = await Promise.all([
+        erc20.balanceOf(ainpayment.address),
+        ethers.provider.getBalance(ainpayment.address)
+      ]);
+      
+      //destruct AINPayment - revert
+      await expect(ainpayment.connect(minter).destruct("NOTDELETE")).to.be.reverted; // revert if not "DELETE"
+      await expect(ainpayment.connect(minter).destruct("DELETE")).to.be.reverted; // revert if not owner    
     });
   });
-
 });
