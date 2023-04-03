@@ -2,6 +2,8 @@
 
 *Upgradeable contract template is not completely implemented yet. Do not use it.*
 
+This repository contains the core contract template of AINFTize. AINFTize is a NFT customize service that enables NFT holders to upgrade and customize their NFTs on their own. The service can be built on top of AIN blockchain as a history layer, and L1 as contract layer such as Ethereum. AINFTize is designed to be compatible with existing NFTs on Ethereum and other evm-compatible blockchains.
+Using this contract, you can choose two options: create AINFT721 from the scratch or clone existing ERC721 projects to AINFT721. The former option is recommended if you want to get started a new NFT project. The latter option is recommended if you want to upgrade your existing NFT project to AINFT721, give your NFT holders more control over their NFTs.
 
 ## Call graphs of the core contracts
 
@@ -26,9 +28,6 @@ The following call graphs show the interactions between these three contracts.
 ```
 > yarn install
 ```
-
-
-
 
 
 ## Compilation
