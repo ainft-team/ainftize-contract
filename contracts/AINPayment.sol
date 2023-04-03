@@ -6,7 +6,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 import "./interfaces/IAINFT.sol";
-import "hardhat/console.sol";
 
 ///@notice AINPayment address should be registered PAYMENT_ROLE in AINFT721.sol
 contract AINPayment is Ownable, ReentrancyGuard {
@@ -83,7 +82,7 @@ contract AINPayment is Ownable, ReentrancyGuard {
         require(keccak256(abi.encodePacked(areYouSure)) == keccak256(abi.encodePacked("DELETE")), "Please type DELETE if you really want to destruct");
 
         // 1. withdraw all AIN to owner        
-        withdrawAll();
+        require(withdrawAll(), "AINPayment::destruct, Failed to withdraw all AIN");
 
         // 2. withdraw all ethers stored in this contract to owner
         address payable _owner = payable(owner());
