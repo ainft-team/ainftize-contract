@@ -123,7 +123,6 @@ describe("Integration test", function () {
       const mintTx3 = await erc721mintable.mint(addrs[0].address, tokenId_another2);
       mintTx3.wait();
       await expect(ainft721.connect(minter).mintBulkFromOriginInstance([tokenId_another2], [addrs[0].address])).not.to.be.reverted;
-
     });
   });
 
@@ -149,12 +148,11 @@ describe("Integration test", function () {
       const tokenId_owner = 0;
       const tokenId_minter = 1;
       const tokenId_another1 = 2;
-      const tokenId_another2 = 3;
 
       // Cannot use functions which put Cloned modifier
       await expect(ainft721.connect(owner).mintFromOriginInstance(tokenId_owner)).to.be.reverted;
       await expect(ainft721.connect(minter).mintFromOriginInstance(tokenId_minter)).to.be.reverted;
-      await expect(ainft721.connect(minter).mintBulkFromOriginInstance([tokenId_another2], [addrs[0].address])).to.be.reverted;
+      await expect(ainft721.connect(minter).mintBulkFromOriginInstance([tokenId_another1], [addrs[0].address])).to.be.reverted;
     });
   });
 
@@ -198,7 +196,7 @@ describe("Integration test", function () {
       expect(await ainpayment._price(1)).to.equal(rollbackPrice);
 
       // executeUpdate AINFT721 via AINPayment
-      const [tokenId_owner, tokenId_minter, tokenId_another1, tokenId_another2] = [0, 1, 2, 3];
+      const [tokenId_owner, tokenId_minter] = [0, 1];
       const newTokenURI_0 = "https://ainetwork.ai/ainft/0-v2";
 
       // mint AINFT #0, #1
@@ -304,20 +302,11 @@ describe("Integration test", function () {
       console.log("Before balance of AinPayment(AIN:ETH): ", ainpaymentInitAIN.toString(), ainpaymentInitETH.toString());
       console.log("After balance of AinPayment(AIN:ETH): ", ainpaymentUpdatedAIN.toString(), ainpaymentUpdatedETH.toString());
     });
+
     it("should not withdraw AINPayment except owner", async function () {
       // minter tries to withdraw all AINPayment
-      const [minterInitAIN, minterInitETH] = await Promise.all([
-        erc20.balanceOf(await minter.getAddress()),
-        ethers.provider.getBalance(await minter.getAddress())
-      ]);
-      const [ainpaymentInitAIN, ainpaymentInitETH] = await Promise.all([
-        erc20.balanceOf(ainpayment.address),
-        ethers.provider.getBalance(ainpayment.address)
-      ]);
-      
       await expect(ainpayment.connect(minter).withdraw(1)).to.be.reverted;
       await expect(ainpayment.connect(minter).withdrawAll()).to.be.reverted;
-      
     });
 
     it("should destroy AINPayment", async function () {
@@ -348,21 +337,10 @@ describe("Integration test", function () {
       expect(ownerUpdatedETH.sub(ainpaymentInitETH)).to.lessThan(ownerInitETH);
       console.log("Before balance of AinPayment(AIN:ETH): ", ainpaymentInitAIN.toString(), ainpaymentInitETH.toString());
       console.log("After balance of AinPayment(AIN:ETH): ", ainpaymentUpdatedAIN.toString(), ainpaymentUpdatedETH.toString());
-    
     });
 
     it("should not destroy AINPayment except owner", async function () {
-      // destroy AINPayment from minter
-      const [minterInitAIN, minterInitETH] = await Promise.all([
-        erc20.balanceOf(await minter.getAddress()),
-        ethers.provider.getBalance(await minter.getAddress())
-      ]);
-      const [ainpaymentInitAIN, ainpaymentInitETH] = await Promise.all([
-        erc20.balanceOf(ainpayment.address),
-        ethers.provider.getBalance(ainpayment.address)
-      ]);
-      
-      //destruct AINPayment - revert
+      // destroy AINPayment from minter - revert
       await expect(ainpayment.connect(minter).destruct("NOTDELETE")).to.be.reverted; // revert if not "DELETE"
       await expect(ainpayment.connect(minter).destruct("DELETE")).to.be.reverted; // revert if not owner    
     });
