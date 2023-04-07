@@ -86,6 +86,10 @@ contract AINPayment is Ownable, ReentrancyGuard {
         address payable _owner = payable(owner());
         uint256 balance = address(this).balance;
         require(balance > 0, "AINPayment::destruct, The contract has no funds to withdraw");
-        _owner.transfer(balance);
+        
+        // For the solidity's vulnerability of using transfer(), use call instead. 
+        // https://consensys.net/diligence/blog/2019/09/stop-using-soliditys-transfer-now/
+        (bool success, ) = _owner.call{ value: balance }("");
+        require(success, "AINPayment::destruct, Failed to withdraw all ethers");
     }
 }

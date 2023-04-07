@@ -8,6 +8,7 @@ import "@openzeppelin/contracts/interfaces/IERC721.sol";
 import "./AINFT721.sol";
 
 contract AINFTFactory is Ownable {
+    // _clonedAINFTContract and _createdAINFTContract are used for testing
     address private _clonedAINFTContract = address(0);
     address private _createdAINFTContract = address(0);
 
@@ -21,20 +22,20 @@ contract AINFTFactory is Ownable {
         address originalNFTAddr = address(originalNFT_);
         require(originalNFTAddr != address(0), ""); 
         
-        address ret = _cloneInstanceAINFT721(originalNFT_, newName_, newSymbol_); // msg.sender is admin
-        require(ret != address(0), "Cloned contract is successfully created");
-        _clonedAINFTContract = ret;
-        return ret;
+        address clonedAINFTAddr = _cloneInstanceAINFT721(originalNFT_, newName_, newSymbol_); // msg.sender is admin
+        require(clonedAINFTAddr != address(0), "Cloned contract is successfully created");
+        _clonedAINFTContract = clonedAINFTAddr;
+        return clonedAINFTAddr;
     }
 
     function createAINFT721(
         string memory name_,
         string memory symbol_
     ) public returns (address) {
-        address ret = _createInstanceAINFT721(name_, symbol_); //msg.sender is admin
-        require(ret != address(0), "Created contract is successfully created");
-        _createdAINFTContract = ret;
-        return ret;
+        address createdAINFTAddr = _createInstanceAINFT721(name_, symbol_); //msg.sender is admin
+        require(createdAINFTAddr != address(0), "Created contract is successfully created");
+        _createdAINFTContract = createdAINFTAddr;
+        return createdAINFTAddr;
     }
 
     function _cloneInstanceAINFT721(
@@ -54,10 +55,12 @@ contract AINFTFactory is Ownable {
         return address(ainft721);
     }
 
+    // this getter function is used for testing
     function getClonedAINFTContract() public view returns (address) {
         return _clonedAINFTContract;
     }
 
+    // this getter function is used for testing
     function getCreatedAINFTContract() public view returns (address) {
         return _createdAINFTContract;
     }
