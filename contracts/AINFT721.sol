@@ -5,9 +5,8 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
-
 import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/interfaces/IERC721.sol";
 
 import "./interfaces/IERC4906.sol";
@@ -24,9 +23,8 @@ contract AINFT721 is
     IERC4906,
     IAINFT
 {
-    using Counters for Counters.Counter;
     using Strings for uint256;
-
+    using Address for address;
     struct MetadataContainer {
         address updater;
         string metadataURI;
@@ -36,22 +34,18 @@ contract AINFT721 is
     address public PAYMENT_PLUGIN;
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
-
-    Counters.Counter private _tokenIdCounter;
     string private baseURI;
     mapping(bytes32 => MetadataContainer) private _metadataStorage; // keccak256(bytes(tokenId, <DELIMETER>, version)) => MetadataContainer
     mapping(uint256 => uint256) private _tokenURICurrentVersion; // tokenId => tokenURIVersion
 
     constructor(string memory name_, string memory symbol_, bool isCloned_, address originNFT_) ERC721(name_, symbol_) {
         if (isCloned_) {
-            //FIXME: need to use tx.origin?
+            //FIXME(jakepyo): If AINFT721 is created/cloned by AINFTFactory, tx.origin should be set corresponding roles.
+            // However under the discussion, if AINFTFactory should be removed, tx.origin should be replaced with msg.sender. 
             _grantRole(DEFAULT_ADMIN_ROLE, tx.origin);
             _grantRole(PAUSER_ROLE, tx.origin);
             _grantRole(MINTER_ROLE, tx.origin);
-
-            
         } else {
-            //FIXME: the originNFT contract address should not be ROLED
             _grantRole(DEFAULT_ADMIN_ROLE, tx.origin);
             _grantRole(PAUSER_ROLE, tx.origin);
             _grantRole(MINTER_ROLE, tx.origin);
@@ -60,12 +54,17 @@ contract AINFT721 is
         IS_CLONED = isCloned_;
         require((address(ORIGIN_NFT) == address(0) && !IS_CLONED) ||
                 (address(ORIGIN_NFT) != address(0) && IS_CLONED), 
-                "If AINFT721 is created first time, the originNFT_ should not be SET. \
-                \n If AINFT721 is cloned by something, the originNFT_ should be SET.");
+                "If AINFT721 is created first time, the originNFT_ should be set zero address. \
+                \n If AINFT721 is cloned by already existing ERC721 contract, the originNFT_ should be set existing contract address.");
     }
 
-    modifier Cloned () {
+    modifier Cloned() {
         require(IS_CLONED, "Only cloned contract can execute.");
+        _;
+    }
+
+    modifier NotCloned() {
+        require(!IS_CLONED, "Only created contract can execute.");
         _;
     }
     
@@ -76,13 +75,12 @@ contract AINFT721 is
         address originOwner = ORIGIN_NFT.ownerOf(tokenId_);
         require(_msgSender() == originOwner, "The sender should be the holder of origin NFT.");
         _safeMint(_msgSender(), tokenId_);
-
     }
     
-    function mintFromOriginInstanceOnBehalf(
+    function mintBulkFromOriginInstance(
         uint256[] calldata tokenIds_,
         address[] calldata recipients_
-    ) public Cloned onlyRole(MINTER_ROLE) {
+    ) public Cloned {
         for (uint i = 0; i < tokenIds_.length; i++) {
             require(!_exists(tokenIds_[i]), "The tokenId_ is already minted or cloned");
             require(recipients_[i] == ORIGIN_NFT.ownerOf(tokenIds_[i]), "The sender should be the holder of origin NFT.");
@@ -92,6 +90,7 @@ contract AINFT721 is
 
     function setPaymentContract(address paymentPlugin_) public onlyRole(DEFAULT_ADMIN_ROLE) {
         require(_msgSender() == tx.origin && _msgSender() != address(0), "Only EOA can set payment contract.");
+        require(paymentPlugin_.isContract(), "The paymentPlugin_ should be a contract address.");
         PAYMENT_PLUGIN = paymentPlugin_;
     }
 
@@ -111,6 +110,7 @@ contract AINFT721 is
         )
         returns (bool)
     {
+        // TODO(jakepyo): To distinguish the contract is AINFT, we should add our own interface.
         // IERC4906 interface added
         return interfaceId == bytes4(0x49064906) || super.supportsInterface(interfaceId);
     }
@@ -128,24 +128,22 @@ contract AINFT721 is
         uint256 tokenId
     )
         public
-        onlyRole(MINTER_ROLE)
     {
-        //FIXME: If you use ERC721Enumerable, the original design is mint it enumerically.
-        _tokenIdCounter.increment();
         _safeMint(to, tokenId);
     }
 
     function _beforeTokenTransfer(
         address from,
         address to,
-        uint256 tokenId,
+        uint256 firstTokenId,
         uint256 batchSize
     )
         internal
         override(ERC721, ERC721Enumerable)
         whenNotPaused
     {
-        super._beforeTokenTransfer(from, to, tokenId, batchSize);
+        //TODO(jakepyo): future work: need to check things if ERC721Enumerable is removed.
+        super._beforeTokenTransfer(from, to, firstTokenId, batchSize);
     }
 
     /**
@@ -241,7 +239,7 @@ contract AINFT721 is
         );
 
         baseURI = newBaseURI;
-        //TODO: emit BatchMetadataUpdate(start, end). Consider after updateTokenURI() calls.
+        //TODO(jakepyo): emit BatchMetadataUpdate(start, end). Consider after updateTokenURI() calls.
         return true;
     }
 
@@ -298,7 +296,4 @@ contract AINFT721 is
             return true;
         }
     }
-
-    ////
-    ////
 }
