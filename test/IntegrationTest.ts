@@ -73,10 +73,11 @@ describe("Integration test", function () {
       let ainft721: AINFT721;
       
       const ainftfactory_tx = await ainftfactory.connect(owner).cloneERC721(erc721mintable.address, "AINFT721", "AINFT");
-      await ainftfactory_tx.wait(1);
-
+      const ainftfactory_receipt = await ainftfactory_tx.wait(1);
+      const ainft721CloneEvent = ainftfactory_receipt.events?.filter((e) => e.event === "CloneAINFT721")[0];
+      
       // Cloned ainft721 contract address
-      const ainft721Address = await ainftfactory.getClonedAINFTContract();
+      const ainft721Address = ainft721CloneEvent?.args?.clonedAINFT;
       ainft721 = await ethers.getContractAt("AINFT721", ainft721Address, owner);
       console.log("AINFT721 Contract At: ", ainft721Address);
       await expect(ainft721.hasRole(ainft721.DEFAULT_ADMIN_ROLE(), owner.address)).not.to.be.reverted;
@@ -121,7 +122,7 @@ describe("Integration test", function () {
       // minter can mint AINFT on behalf of the others
       const mintTx3 = await erc721mintable.mint(addrs[0].address, tokenId_another2);
       mintTx3.wait();
-      await expect(ainft721.connect(minter).mintFromOriginInstanceOnBehalf([tokenId_another2], [addrs[0].address])).not.to.be.reverted;
+      await expect(ainft721.connect(minter).mintBulkFromOriginInstance([tokenId_another2], [addrs[0].address])).not.to.be.reverted;
 
     });
   });
@@ -131,10 +132,11 @@ describe("Integration test", function () {
       let ainft721: AINFT721;
 
       const ainftfactory_tx = await ainftfactory.connect(owner).createAINFT721("AINFT721", "AINFT");
-      await ainftfactory_tx.wait(1);
+      const ainftfactory_receipt = await ainftfactory_tx.wait(1);
+      const ainft721CreateEvent = ainftfactory_receipt.events?.filter((e) => e.event === "CreateAINFT721")[0];
 
       //create ainft721 contract address
-      const ainft721Address = await ainftfactory.getCreatedAINFTContract();
+      const ainft721Address = ainft721CreateEvent?.args?.createdAINFT;
       ainft721 = await ethers.getContractAt("AINFT721", ainft721Address, owner);
       console.log("AINFT721 Contract At: ", ainft721Address);
       await expect(ainft721.hasRole(ainft721.DEFAULT_ADMIN_ROLE(), owner.address)).not.to.be.reverted;
@@ -152,7 +154,7 @@ describe("Integration test", function () {
       // Cannot use functions which put Cloned modifier
       await expect(ainft721.connect(owner).mintFromOriginInstance(tokenId_owner)).to.be.reverted;
       await expect(ainft721.connect(minter).mintFromOriginInstance(tokenId_minter)).to.be.reverted;
-      await expect(ainft721.connect(minter).mintFromOriginInstanceOnBehalf([tokenId_another2], [addrs[0].address])).to.be.reverted;
+      await expect(ainft721.connect(minter).mintBulkFromOriginInstance([tokenId_another2], [addrs[0].address])).to.be.reverted;
     });
   });
 
@@ -162,10 +164,11 @@ describe("Integration test", function () {
       let ainpayment: AINPayment;
 
       const ainftfactory_tx = await ainftfactory.connect(owner).createAINFT721("AINFT721", "AINFT");
-      await ainftfactory_tx.wait(1);
+      const ainftfactory_receipt = await ainftfactory_tx.wait(1);
+      const ainft721CreateEvent = ainftfactory_receipt.events?.filter((e) => e.event === "CreateAINFT721")[0];
 
       //create ainft721 contract address
-      const ainft721Address = await ainftfactory.getCreatedAINFTContract();
+      const ainft721Address = ainft721CreateEvent?.args?.createdAINFT;
       ainft721 = await ethers.getContractAt("AINFT721", ainft721Address, owner);
       expect(await ainft721.hasRole(ainft721.DEFAULT_ADMIN_ROLE(), owner.address)).to.equal(true);
       expect(await ainft721.IS_CLONED()).to.equal(false);
@@ -239,10 +242,11 @@ describe("Integration test", function () {
 
     beforeEach(async function () {
       const ainftfactory_tx = await ainftfactory.connect(owner).createAINFT721("AINFT721", "AINFT");
-      await ainftfactory_tx.wait(1);
+      const ainftfactory_receipt = await ainftfactory_tx.wait(1);
+      const ainft721CreateEvent = ainftfactory_receipt.events?.filter((e) => e.event === "CreateAINFT721")[0];
 
       //create ainft721 contract address
-      const ainft721Address = await ainftfactory.getCreatedAINFTContract();
+      const ainft721Address = ainft721CreateEvent?.args?.createdAINFT;
       ainft721 = await ethers.getContractAt("AINFT721", ainft721Address, owner);
       console.log("AINFT721 Contract At: ", ainft721Address);
       expect(await ainft721.hasRole(ainft721.DEFAULT_ADMIN_ROLE(), owner.address)).to.equal(true);
