@@ -8,9 +8,8 @@ import "@openzeppelin/contracts/interfaces/IERC721.sol";
 import "./AINFT721.sol";
 
 contract AINFTFactory is Ownable {
-    // _clonedAINFTContract and _createdAINFTContract are used for testing
-    address private _clonedAINFTContract = address(0);
-    address private _createdAINFTContract = address(0);
+    event CloneAINFT721(address indexed originalNFT, address indexed clonedAINFT);
+    event CreateAINFT721(address indexed createdAINFT);
 
     constructor() Ownable() {}
 
@@ -19,12 +18,10 @@ contract AINFTFactory is Ownable {
         string memory newName_,
         string memory newSymbol_
     ) public returns (address) {
-        address originalNFTAddr = address(originalNFT_);
-        require(originalNFTAddr != address(0), ""); 
-        
+        require(address(originalNFT_) != address(0), ""); 
         address clonedAINFTAddr = _cloneInstanceAINFT721(originalNFT_, newName_, newSymbol_); // msg.sender is admin
         require(clonedAINFTAddr != address(0), "Cloned contract is successfully created");
-        _clonedAINFTContract = clonedAINFTAddr;
+        emit CloneAINFT721(address(originalNFT_), clonedAINFTAddr);
         return clonedAINFTAddr;
     }
 
@@ -34,7 +31,7 @@ contract AINFTFactory is Ownable {
     ) public returns (address) {
         address createdAINFTAddr = _createInstanceAINFT721(name_, symbol_); //msg.sender is admin
         require(createdAINFTAddr != address(0), "Created contract is successfully created");
-        _createdAINFTContract = createdAINFTAddr;
+        emit CreateAINFT721(createdAINFTAddr);
         return createdAINFTAddr;
     }
 
@@ -54,15 +51,4 @@ contract AINFTFactory is Ownable {
         AINFT721 ainft721 = new AINFT721(name_, symbol_, false, address(0));
         return address(ainft721);
     }
-
-    // this getter function is used for testing
-    function getClonedAINFTContract() public view returns (address) {
-        return _clonedAINFTContract;
-    }
-
-    // this getter function is used for testing
-    function getCreatedAINFTContract() public view returns (address) {
-        return _createdAINFTContract;
-    }
-
 }

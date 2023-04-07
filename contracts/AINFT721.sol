@@ -39,17 +39,11 @@ contract AINFT721 is
     mapping(uint256 => uint256) private _tokenURICurrentVersion; // tokenId => tokenURIVersion
 
     constructor(string memory name_, string memory symbol_, bool isCloned_, address originNFT_) ERC721(name_, symbol_) {
-        if (isCloned_) {
-            //FIXME(jakepyo): If AINFT721 is created/cloned by AINFTFactory, tx.origin should be set corresponding roles.
-            // However under the discussion, if AINFTFactory should be removed, tx.origin should be replaced with msg.sender. 
-            _grantRole(DEFAULT_ADMIN_ROLE, tx.origin);
-            _grantRole(PAUSER_ROLE, tx.origin);
-            _grantRole(MINTER_ROLE, tx.origin);
-        } else {
-            _grantRole(DEFAULT_ADMIN_ROLE, tx.origin);
-            _grantRole(PAUSER_ROLE, tx.origin);
-            _grantRole(MINTER_ROLE, tx.origin);
-        }
+        //FIXME(jakepyo): If AINFT721 is created/cloned by AINFTFactory, tx.origin should be set corresponding roles.
+        // However under the discussion, if AINFTFactory should be removed, tx.origin should be replaced with msg.sender. 
+        _grantRole(DEFAULT_ADMIN_ROLE, tx.origin);
+        _grantRole(PAUSER_ROLE, tx.origin);
+        _grantRole(MINTER_ROLE, tx.origin);
         ORIGIN_NFT = IERC721(originNFT_);
         IS_CLONED = isCloned_;
         require((address(ORIGIN_NFT) == address(0) && !IS_CLONED) ||
@@ -72,8 +66,7 @@ contract AINFT721 is
         uint256 tokenId_
     ) public Cloned {
         require(!_exists(tokenId_), "The tokenId_ is already minted or cloned");
-        address originOwner = ORIGIN_NFT.ownerOf(tokenId_);
-        require(_msgSender() == originOwner, "The sender should be the holder of origin NFT.");
+        require(_msgSender() == ORIGIN_NFT.ownerOf(tokenId_), "The sender should be the holder of origin NFT.");
         _safeMint(_msgSender(), tokenId_);
     }
     
@@ -128,6 +121,7 @@ contract AINFT721 is
         uint256 tokenId
     )
         public
+        NotCloned
     {
         _safeMint(to, tokenId);
     }
@@ -252,7 +246,8 @@ contract AINFT721 is
     ) external returns (bool) {
         require(
             (isApprovedOrOwner(tx.origin, tokenId) ||
-             PAYMENT_PLUGIN == _msgSender()),
+             (PAYMENT_PLUGIN == _msgSender() && PAYMENT_PLUGIN != address(0))
+            ),
             "AINFT721::updateTokenURI() - only payment contract can call this funciton."
         );
         _requireMinted(tokenId);

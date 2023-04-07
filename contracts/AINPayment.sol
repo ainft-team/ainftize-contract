@@ -46,7 +46,6 @@ contract AINPayment is Ownable, ReentrancyGuard {
         require(_pay(_price[0]), "AINPayment::executeUpdate, Insufficient AIN");
         bool success = _ainft.updateTokenURI(tokenId, newTokenURI);
         return success;
-
     }
 
     function executeRollback(uint256 tokenId) external returns(bool) {
@@ -55,7 +54,6 @@ contract AINPayment is Ownable, ReentrancyGuard {
 
         bool success = _ainft.rollbackTokenURI(tokenId);
         return success;
-
     }
 
     function withdraw(uint256 amount) public onlyOwner nonReentrant returns(bool) {
