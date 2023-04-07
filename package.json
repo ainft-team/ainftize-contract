@@ -5,6 +5,15 @@
   "repository": "https://github.com/ainft-team/ainftize-contract",
   "author": "Jungwoo Pyo(jungwoo_pyo@comcom.ai, jw-pyo)",
   "license": "MIT",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "test:integration": "hardhat test test/IntegrationTest.ts",
+    "coverage": "hardhat coverage",
+    "docgen": "solidity-docgen -i contracts -o docs",
+    "deploy:hardhat": "hardhat run --network hardhat scripts/deploy.ts",
+    "deploy:mainnet": "hardhat run --network mainnet scripts/deploy.ts"  
+  },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^1.0.4",
     "@nomicfoundation/hardhat-network-helpers": "^1.0.6",

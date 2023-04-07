@@ -22,26 +22,29 @@ The following call graphs show the interactions between these three contracts.
 ## Prerequisite
 - node.js
 - yarn
-- npx
 
 ## Installation
 ```
-> yarn install
+> yarn
 ```
 
 
 ## Compilation
 ```
-> npx hardhat compile
+> yarn compile
 ```
 
 ## Deployment(Not Implemented yet)
 ```
-> npx hardhat run scripts/deploy.ts
+> yarn deploy:hardhat // for localtest
+> yarn deploy:mainnet // Ethereum mainnet
 ```
 
 ## Test
 ```
 # for integration test
-> npx hardhat test test/integrationTest.ts
+> yarn test:integration
+
+# for entire test
+> yarn test
 ```
