@@ -1,16 +1,12 @@
 <?xml version="1.0" standalone="no"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1404pt" height="1347pt" viewBox="0.00 0.00 1404.33 1347">
-<g id="graph0" class="graph" transform="translate(16.900673247606846,1228.0611806252755) scale(1.0606154062679305)" data-name="G">
+<g id="graph0" class="graph" transform="translate(91.25514396345386,1078.599256290393) scale(0.7903247611076673)" data-name="G">
 
-<polygon fill="#2e3e56" stroke="none" points="-4,4 -4,-1343 1400.33,-1343 1400.33,4 -4,4"/>
+<polygon fill="#d8d6d6" stroke="none" points="-4,4 -4,-1343 1400.33,-1343 1400.33,4 -4,4"/>
 <g id="clust1" class="cluster" data-name="clusterAINFT721">
 
 <path fill="#445773" stroke="#445773" d="M210,-44C210,-44 1208.19,-44 1208.19,-44 1214.19,-44 1220.19,-50 1220.19,-56 1220.19,-56 1220.19,-603 1220.19,-603 1220.19,-609 1214.19,-615 1208.19,-615 1208.19,-615 210,-615 210,-615 204,-615 198,-609 198,-603 198,-603 198,-56 198,-56 198,-50 204,-44 210,-44"/>
-<text text-anchor="middle" x="709.09" y="-598.4" font-family="Times,serif" font-size="14.00" fill="#f0f0f0">AINFT721</text>
-</g><g id="clust5" class="cluster" data-name="cluster_user">
-
-<path fill="#3b4b63" stroke="#e8726d" stroke-dasharray="5,2" d="M36.08,-708C36.08,-708 149.92,-708 149.92,-708 155.92,-708 161.92,-714 161.92,-720 161.92,-720 161.92,-881 161.92,-881 161.92,-887 155.92,-893 149.92,-893 149.92,-893 36.08,-893 36.08,-893 30.08,-893 24.08,-887 24.08,-881 24.08,-881 24.08,-720 24.08,-720 24.08,-714 30.08,-708 36.08,-708"/>
-<text text-anchor="middle" x="93" y="-876.4" font-family="Times,serif" font-size="14.00" fill="#f0f0f0">User</text>
+<text text-anchor="middle" x="709.09" y="-598.4" font-family="Times,serif" font-size="14" fill="#f0f0f0">AINFT721</text>
 </g>
 <g id="clust2" class="cluster" data-name="clusterAINFTFactory">
 
@@ -22,19 +18,19 @@
 <path fill="#445773" stroke="#445773" d="M279.21,-762C279.21,-762 897.52,-762 897.52,-762 903.52,-762 909.52,-768 909.52,-774 909.52,-774 909.52,-989 909.52,-989 909.52,-995 903.52,-1001 897.52,-1001 897.52,-1001 279.21,-1001 279.21,-1001 273.21,-1001 267.21,-995 267.21,-989 267.21,-989 267.21,-774 267.21,-774 267.21,-768 273.21,-762 279.21,-762"/>
 <text text-anchor="middle" x="588.37" y="-984.4" font-family="Times,serif" font-size="14.00" fill="#f0f0f0">AINPayment</text>
 </g>
-
-
-
-
 <g id="clust4" class="cluster" data-name="clusterIERC20">
 
 <path fill="#3b4b63" stroke="#e8726d" stroke-dasharray="5,2" d="M808.9,-623C808.9,-623 923.81,-623 923.81,-623 929.81,-623 935.81,-629 935.81,-635 935.81,-635 935.81,-742 935.81,-742 935.81,-748 929.81,-754 923.81,-754 923.81,-754 808.9,-754 808.9,-754 802.9,-754 796.9,-748 796.9,-742 796.9,-742 796.9,-635 796.9,-635 796.9,-629 802.9,-623 808.9,-623"/>
 <text text-anchor="middle" x="866.35" y="-737.4" font-family="Times,serif" font-size="14.00" fill="#f0f0f0">IERC20(AIN)</text>
 </g>
+<g id="clust5" class="cluster" data-name="cluster_user">
 
+<path fill="#3b4b63" stroke="#e8726d" stroke-dasharray="5,2" d="M36.08,-708C36.08,-708 149.92,-708 149.92,-708 155.92,-708 161.92,-714 161.92,-720 161.92,-720 161.92,-881 161.92,-881 161.92,-887 155.92,-893 149.92,-893 149.92,-893 36.08,-893 36.08,-893 30.08,-893 24.08,-887 24.08,-881 24.08,-881 24.08,-720 24.08,-720 24.08,-714 30.08,-708 36.08,-708"/>
+<text text-anchor="middle" x="93" y="-876.4" font-family="Times,serif" font-size="14.00" fill="#f0f0f0">User</text>
+</g>
 <g id="clust6" class="cluster" data-name="cluster_01">
 
-<polygon fill="#2e3e56" stroke="black" points="20,-1202 20,-1331 385.6,-1331 385.6,-1202 20,-1202"/>
+<polygon fill="#d8d6d6" stroke="black" points="20,-1202 20,-1331 385.6,-1331 385.6,-1202 20,-1202"/>
 <text text-anchor="middle" x="202.8" y="-1314.4" font-family="Times,serif" font-size="14.00">Legend</text>
 </g>
 <!-- AINFT721.&lt;Constructor&gt; -->
@@ -43,34 +39,6 @@
 <ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="350.6" cy="-564" rx="67.55" ry="18"/>
 <text text-anchor="middle" x="350.6" y="-559.8" font-family="Times,serif" font-size="14.00">&lt;Constructor&gt;</text>
 </g>
-<!-- AINFT721._grantRole -->
-
-<!-- AINFT721.&lt;Constructor&gt;&#45;&gt;AINFT721._grantRole -->
-
-<!-- AINFT721.&lt;Constructor&gt;&#45;&gt;AINFT721._grantRole -->
-
-<!-- AINFT721.&lt;Constructor&gt;&#45;&gt;AINFT721._grantRole -->
-
-<!-- AINFT721.&lt;Constructor&gt;&#45;&gt;AINFT721._grantRole -->
-
-<!-- AINFT721.&lt;Constructor&gt;&#45;&gt;AINFT721._grantRole -->
-
-<!-- AINFT721.&lt;Constructor&gt;&#45;&gt;AINFT721._grantRole -->
-
-<!-- AINFT721.IERC721 -->
-
-<!-- AINFT721.&lt;Constructor&gt;&#45;&gt;AINFT721.IERC721 -->
-
-<!-- AINFT721.address -->
-
-<!-- AINFT721.&lt;Constructor&gt;&#45;&gt;AINFT721.address -->
-
-<!-- AINFT721.&lt;Constructor&gt;&#45;&gt;AINFT721.address -->
-
-<!-- AINFT721.&lt;Constructor&gt;&#45;&gt;AINFT721.address -->
-
-<!-- AINFT721.&lt;Constructor&gt;&#45;&gt;AINFT721.address -->
-
 <!-- AINFT721.Cloned -->
 <g id="node2" class="node" pointer-events="visible" data-name="AINFT721.Cloned">
 
@@ -78,30 +46,12 @@
 <polygon fill="none" stroke="#1bc6a6" stroke-width="3" points="396.88,-495.9 396.88,-516.1 368.92,-528 332.27,-528 304.31,-516.1 304.31,-495.9 332.27,-484 368.92,-484 396.88,-495.9"/>
 <text text-anchor="middle" x="350.6" y="-501.8" font-family="Times,serif" font-size="14.00">Cloned</text>
 </g>
-<!-- AINFT721.mintFromOriginInstance --><g id="node18" class="node" pointer-events="visible" data-name="AINFT721.AINPayment" data-comment="AINFT721.mintFromOriginInstance">
-
-<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="622.16" cy="-450" rx="61.99" ry="18"/>
-<text text-anchor="middle" x="622.16" y="-445.8" font-family="Times,serif" font-size="14.00">AINPayment</text>
-</g>
+<!-- AINFT721.mintFromOriginInstance -->
 <g id="node3" class="node" pointer-events="visible" data-name="AINFT721.mintFromOriginInstance">
 
 <ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="350.6" cy="-178" rx="107.11" ry="18"/>
 <text text-anchor="middle" x="350.6" y="-173.8" font-family="Times,serif" font-size="14.00">mintFromOriginInstance</text>
 </g>
-<!-- AINFT721._exists --><g id="edge8" class="edge" data-name="AINFT721.setPaymentContract-&gt;AINFT721.AINPayment" data-comment="AINFT721._exists">
-
-<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M440.61,-448.66C474.86,-448.91 513.59,-449.2 546.37,-449.45"/>
-<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="546.03,-452.94 556.05,-449.52 546.08,-445.94 546.03,-452.94"/>
-</g>
-
-<!-- AINFT721.mintFromOriginInstance&#45;&gt;AINFT721._exists -->
-
-<!-- AINFT721._msgSender -->
-
-<!-- AINFT721.mintFromOriginInstance&#45;&gt;AINFT721._msgSender -->
-
-<!-- AINFT721.mintFromOriginInstance&#45;&gt;AINFT721._msgSender -->
-
 <!-- AINFT721._safeMint -->
 <g id="node16" class="node" pointer-events="visible" data-name="AINFT721._safeMint">
 
@@ -132,8 +82,6 @@
 <ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="350.6" cy="-286" rx="144.7" ry="18"/>
 <text text-anchor="middle" x="350.6" y="-281.8" font-family="Times,serif" font-size="14.00">mintFromOriginInstanceOnBehalf</text>
 </g>
-<!-- AINFT721.mintFromOriginInstanceOnBehalf&#45;&gt;AINFT721._exists -->
-
 <!-- AINFT721.mintFromOriginInstanceOnBehalf&#45;&gt;AINFT721._safeMint -->
 <g id="edge7" class="edge" data-name="AINFT721.mintFromOriginInstanceOnBehalf-&gt;AINFT721._safeMint">
 
@@ -152,30 +100,18 @@
 <ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="350.6" cy="-448" rx="88.62" ry="18"/>
 <text text-anchor="middle" x="350.6" y="-443.8" font-family="Times,serif" font-size="14.00">setPaymentContract</text>
 </g>
-<!-- AINFT721.setPaymentContract&#45;&gt;AINFT721.address -->
+<!-- AINFT721.AINPayment -->
+<g id="node18" class="node" pointer-events="visible" data-name="AINFT721.AINPayment">
 
-<!-- AINFT721.setPaymentContract&#45;&gt;AINFT721._msgSender -->
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="622.16" cy="-450" rx="61.99" ry="18"/>
+<text text-anchor="middle" x="622.16" y="-445.8" font-family="Times,serif" font-size="14.00">AINPayment</text>
+</g>
+<!-- AINFT721.setPaymentContract&#45;&gt;AINFT721.AINPayment -->
+<g id="edge8" class="edge" data-name="AINFT721.setPaymentContract-&gt;AINFT721.AINPayment">
 
-<!-- AINFT721.setPaymentContract&#45;&gt;AINFT721._msgSender -->
-
-<!-- AINFT721.supportsInterface -->
-
-<!-- IAINFT.supportsInterface -->
-
-<!-- AINFT721.supportsInterface&#45;&gt;IAINFT.supportsInterface -->
-
-<!-- AINFT721.pause -->
-
-<!-- AINFT721._pause -->
-
-<!-- AINFT721.pause&#45;&gt;AINFT721._pause -->
-
-<!-- AINFT721.unpause -->
-
-<!-- AINFT721._unpause -->
-
-<!-- AINFT721.unpause&#45;&gt;AINFT721._unpause -->
-
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M440.61,-448.66C474.86,-448.91 513.59,-449.2 546.37,-449.45"/>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="546.03,-452.94 556.05,-449.52 546.08,-445.94 546.03,-452.94"/>
+</g>
 <!-- AINFT721.safeMint -->
 <g id="node6" class="node" pointer-events="visible" data-name="AINFT721.safeMint">
 
@@ -188,51 +124,7 @@
 <path fill="none" stroke="#1bc6a6" stroke-width="2" d="M393.44,-332.42C422.11,-327.16 461,-319.88 495.19,-313 517.91,-308.43 542.86,-303.14 564.53,-298.46"/>
 <polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="565.21,-301.89 574.24,-296.35 563.73,-295.05 565.21,-301.89"/>
 </g>
-<!-- Counters.Counter.increment -->
-
-<!-- AINFT721.safeMint&#45;&gt;Counters.Counter.increment -->
-
-<!-- AINFT721._beforeTokenTransfer -->
-
-<!-- IAINFT._beforeTokenTransfer -->
-
-<!-- AINFT721._beforeTokenTransfer&#45;&gt;IAINFT._beforeTokenTransfer -->
-
-<!-- AINFT721._requireMinted -->
-
-<!-- IAINFT._requireMinted -->
-
-<!-- AINFT721._requireMinted&#45;&gt;IAINFT._requireMinted -->
-<g id="edge26" class="edge" data-name="AINPayment.withdraw-&gt;AINPayment.owner" data-comment="AINFT721._requireMinted-&gt;IAINFT._requireMinted">
-
-<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M669,-890.58C711.66,-888.83 774.96,-888.81 818.08,-890.52"/>
-<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="817.87,-894.01 828.02,-890.98 818.19,-887.02 817.87,-894.01"/>
-</g><g id="edge28" class="edge" data-name="AINPayment.withdraw-&gt;AINPayment.owner" data-comment="AINFT721._requireMinted-&gt;IAINFT._requireMinted">
-
-<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M669,-901.42C711.66,-903.17 774.96,-903.19 818.08,-901.48" style=""/>
-<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="818.19,-904.98 828.02,-901.02 817.87,-897.99 818.19,-904.98"/>
-</g>
-<!-- AINFT721.isApprovedOrOwner -->
-
-<!-- IAINFT._isApprovedOrOwner -->
-
-<!-- AINFT721.isApprovedOrOwner&#45;&gt;IAINFT._isApprovedOrOwner -->
-
-<!-- AINFT721.burn -->
-
-<!-- IAINFT.burn -->
-<g id="edge23" class="edge" data-name="AINPayment.executeUpdate-&gt;AINFT721.updateTokenURI" data-comment="IAINFT.burn">
-
-<path fill="none" stroke="white" stroke-width="2" d="M420.08,-840.14C445.36,-836.74 473.19,-829.55 495.19,-815 519.25,-799.09 510.69,-781.29 531.19,-761 613.37,-679.69 648.41,-675.76 749.12,-619 770.33,-607.05 794.48,-595.15 815.25,-585.42"/>
-<polygon fill="white" stroke="white" stroke-width="2" points="816.69,-588.61 824.29,-581.23 813.75,-582.26 816.69,-588.61"/>
-</g>
-<!-- AINFT721.burn&#45;&gt;IAINFT.burn -->
-
-<!-- AINFT721._baseURI --><g id="edge19" class="edge" data-name="AINFTFactory.cloneERC721-&gt;AINFTFactory.address" data-comment="AINFT721._baseURI">
-
-<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M155.87,-1082.46C194.98,-1078.33 245.43,-1073 285.05,-1068.82"/>
-<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="285.18,-1072.32 294.76,-1067.79 284.44,-1065.36 285.18,-1072.32"/>
-</g>
+<!-- AINFT721._baseURI -->
 <g id="node7" class="node" pointer-events="visible" data-name="AINFT721._baseURI">
 
 <ellipse fill="#f2c383" stroke="#f2c383" stroke-width="3" cx="350.6" cy="-232" rx="49.81" ry="18"/>
@@ -243,13 +135,7 @@
 
 <ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="350.6" cy="-394" rx="49.24" ry="18"/>
 <text text-anchor="middle" x="350.6" y="-389.8" font-family="Times,serif" font-size="14.00">tokenURI</text>
-</g><g id="edge25" class="edge" data-name="AINPayment.executeRollback-&gt;AINFT721.rollbackTokenURI" data-comment="AINFT721.tokenURI">
-
-<path fill="none" stroke="white" stroke-width="2" d="M370.15,-769.26C401.32,-738.53 467.08,-676.76 531.19,-636 621.13,-578.83 648.28,-570.45 749.12,-536 761.68,-531.71 775.22,-527.88 788.48,-524.54"/>
-<polygon fill="white" stroke="white" stroke-width="2" points="789.22,-527.96 798.12,-522.21 787.57,-521.16 789.22,-527.96"/>
 </g>
-<!-- AINFT721.tokenURI&#45;&gt;AINFT721._requireMinted -->
-
 <!-- AINFT721.tokenURIByVersion -->
 <g id="node12" class="node" pointer-events="visible" data-name="AINFT721.tokenURIByVersion">
 
@@ -273,20 +159,12 @@
 
 <ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="1322.26" cy="-432" rx="74.14" ry="18"/>
 <text text-anchor="middle" x="1322.26" y="-427.8" font-family="Times,serif" font-size="14.00">tokenId.toString</text>
-</g><g id="node35" class="node" pointer-events="visible" data-name="User.viewNFT" data-comment="tokenId.toString">
-
-<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="93" cy="-734" rx="48.1" ry="18"/>
-<text text-anchor="middle" x="93" y="-729.8" font-family="Times,serif" font-size="14.00">viewNFT</text>
 </g>
 <!-- AINFT721._metadataStorageKey&#45;&gt;tokenId.toString -->
 <g id="edge11" class="edge" data-name="AINFT721._metadataStorageKey-&gt;tokenId.toString">
 
 <path fill="none" stroke="white" stroke-width="2" d="M1192.12,-452.85C1209.43,-450.06 1227.86,-447.08 1245.22,-444.28"/>
 <polygon fill="white" stroke="white" stroke-width="2" points="1245.63,-447.76 1254.94,-442.71 1244.51,-440.85 1245.63,-447.76"/>
-</g><g id="edge3" class="edge" data-name="User.viewNFT-&gt;AINFT721.tokenURI" data-comment="AINFT721._metadataStorageKey-&gt;tokenId.toString">
-
-<path fill="none" stroke="white" stroke-width="2" d="M94.07,-714.54C95.39,-659.13 107.27,-499.48 198,-421 222.5,-399.81 257.78,-392.63 288.14,-390.94"/>
-<polygon fill="white" stroke="white" stroke-width="2" points="287.89,-394.45 297.77,-390.63 287.67,-387.46 287.89,-394.45"/>
 </g>
 <!-- AINFT721.metadataStorageByVersion -->
 <g id="node10" class="node" pointer-events="visible" data-name="AINFT721.metadataStorageByVersion">
@@ -299,159 +177,288 @@
 
 <path fill="none" stroke="#1bc6a6" stroke-width="2" d="M975.21,-454.84C987.26,-455.72 999.52,-456.61 1011.52,-457.48"/>
 <polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="1011.16,-460.97 1021.39,-458.2 1011.67,-453.99 1011.16,-460.97"/>
-</g><g id="edge33" class="edge" data-name="key-&gt;key2" data-comment="AINFT721.metadataStorageByVersion-&gt;AINFT721._metadataStorageKey">
-
-<path fill="none" stroke="rgb(27, 198, 166)" stroke-width="2" d="M151,-1284C229.56,-1284 252.3,-1284 324.98,-1284"/>
-<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="324.57,-1287.5 334.57,-1284 324.57,-1280.5 324.57,-1287.5"/>
 </g>
-<!-- AINFT721.tokenURICurrentVersion --><g id="node11" class="node" pointer-events="visible" data-name="AINFT721.tokenURICurrentVersion">
+<!-- AINFT721.tokenURICurrentVersion -->
+<g id="node11" class="node" pointer-events="visible" data-name="AINFT721.tokenURICurrentVersion">
 
 <ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="350.6" cy="-124" rx="109.39" ry="18"/>
 <text text-anchor="middle" x="350.6" y="-119.8" font-family="Times,serif" font-size="14.00">tokenURICurrentVersion</text>
-</g><!-- AINFT721.tokenURICurrentVersion&#45;&gt;AINFT721._requireMinted --><g id="edge14" class="edge" data-name="AINFT721.tokenURIByVersion-&gt;AINFT721.metadataStorageByVersion" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- AINFT721.tokenURIByVersion&#45;&gt;AINFT721.metadataStorageByVersion -->
+<g id="edge14" class="edge" data-name="AINFT721.tokenURIByVersion-&gt;AINFT721.metadataStorageByVersion">
 
 <path fill="none" stroke="#1bc6a6" stroke-width="2" d="M688.06,-409.67C716.51,-415.66 750.27,-422.77 780.67,-429.17"/>
 <polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="779.54,-432.51 790.05,-431.14 780.99,-425.66 779.54,-432.51"/>
-</g><g id="edge31" class="edge" data-name="AINPayment.destruct-&gt;AINPayment.owner" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
-
-<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M390.29,-903.53C426.54,-910.17 482.3,-919.35 531.19,-923 611.83,-929.03 632.58,-930.09 713.12,-923 749.34,-919.81 789.85,-912.44 819.97,-906.2"/>
-<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="820.6,-909.65 829.65,-904.15 819.14,-902.8 820.6,-909.65"/>
-</g><g id="edge13" class="edge" data-name="AINFT721.tokenURIByVersion-&gt;tokenId.toString" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- AINFT721.tokenURIByVersion&#45;&gt;tokenId.toString -->
+<g id="edge13" class="edge" data-name="AINFT721.tokenURIByVersion-&gt;tokenId.toString">
 
 <path fill="none" stroke="white" stroke-width="2" d="M711.93,-400.58C846.89,-407.54 1102.05,-420.7 1235.32,-427.57"/>
 <polygon fill="white" stroke="white" stroke-width="2" points="1235.02,-431.06 1245.19,-428.08 1235.38,-424.07 1235.02,-431.06"/>
-</g><g id="node13" class="node" pointer-events="visible" data-name="AINFT721.setBaseURI" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- AINFT721.setBaseURI -->
+<g id="node13" class="node" pointer-events="visible" data-name="AINFT721.setBaseURI">
 
 <ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="350.6" cy="-70" rx="57.33" ry="18"/>
 <text text-anchor="middle" x="350.6" y="-65.8" font-family="Times,serif" font-size="14.00">setBaseURI</text>
-</g><g id="node14" class="node" pointer-events="visible" data-name="AINFT721.updateTokenURI" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- AINFT721.updateTokenURI -->
+<g id="node14" class="node" pointer-events="visible" data-name="AINFT721.updateTokenURI">
 
 <ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="866.35" cy="-563" rx="78.16" ry="18"/>
 <text text-anchor="middle" x="866.35" y="-558.8" font-family="Times,serif" font-size="14.00">updateTokenURI</text>
-</g><g id="edge15" class="edge" data-name="AINFT721.updateTokenURI-&gt;AINFT721._metadataStorageKey" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- AINFT721.updateTokenURI&#45;&gt;AINFT721._metadataStorageKey -->
+<g id="edge15" class="edge" data-name="AINFT721.updateTokenURI-&gt;AINFT721._metadataStorageKey">
 
 <path fill="none" stroke="#1bc6a6" stroke-width="2" d="M933.5,-552.62C950.3,-548.65 968,-543.26 983.58,-536 1001.71,-527.56 1002.41,-519.25 1019.58,-509 1032.41,-501.34 1046.8,-494.08 1060.43,-487.74"/>
 <polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="1061.74,-490.99 1069.4,-483.67 1058.85,-484.61 1061.74,-490.99"/>
-</g><g id="node17" class="node" pointer-events="visible" data-name="AINFT721.MetadataUpdate" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- AINFT721.MetadataUpdate -->
+<g id="node17" class="node" pointer-events="visible" data-name="AINFT721.MetadataUpdate">
 
 <ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="1115.89" cy="-536" rx="74.7" ry="18"/>
 <text text-anchor="middle" x="1115.89" y="-531.8" font-family="Times,serif" font-size="14.00">MetadataUpdate</text>
-</g><g id="edge16" class="edge" data-name="AINFT721.updateTokenURI-&gt;AINFT721.MetadataUpdate" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- AINFT721.updateTokenURI&#45;&gt;AINFT721.MetadataUpdate -->
+<g id="edge16" class="edge" data-name="AINFT721.updateTokenURI-&gt;AINFT721.MetadataUpdate">
 
 <path fill="none" stroke="#1bc6a6" stroke-width="2" d="M938.95,-555.19C968.44,-551.97 1002.76,-548.23 1033.22,-544.91"/>
 <polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="1033.44,-548.41 1043,-543.84 1032.68,-541.45 1033.44,-548.41"/>
-</g><g id="node15" class="node" pointer-events="visible" data-name="AINFT721.rollbackTokenURI" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- AINFT721.rollbackTokenURI -->
+<g id="node15" class="node" pointer-events="visible" data-name="AINFT721.rollbackTokenURI">
 
 <ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="866.35" cy="-509" rx="83.96" ry="18"/>
 <text text-anchor="middle" x="866.35" y="-504.8" font-family="Times,serif" font-size="14.00">rollbackTokenURI</text>
-</g><g id="node33" class="node" pointer-events="visible" data-name="User.updateNFT" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
-
-<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="93" cy="-842" rx="55.04" ry="18"/>
-<text text-anchor="middle" x="93" y="-837.8" font-family="Times,serif" font-size="14.00">updateNFT</text>
-</g><g id="edge17" class="edge" data-name="AINFT721.rollbackTokenURI-&gt;AINFT721._metadataStorageKey" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- AINFT721.rollbackTokenURI&#45;&gt;AINFT721._metadataStorageKey -->
+<g id="edge17" class="edge" data-name="AINFT721.rollbackTokenURI-&gt;AINFT721._metadataStorageKey">
 
 <path fill="none" stroke="#1bc6a6" stroke-width="2" d="M934.01,-497.15C963.59,-491.89 998.74,-485.65 1030.15,-480.06"/>
 <polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="1030.68,-483.52 1039.92,-478.33 1029.46,-476.63 1030.68,-483.52"/>
-</g><g id="edge18" class="edge" data-name="AINFT721.rollbackTokenURI-&gt;AINFT721.MetadataUpdate" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- AINFT721.rollbackTokenURI&#45;&gt;AINFT721.MetadataUpdate -->
+<g id="edge18" class="edge" data-name="AINFT721.rollbackTokenURI-&gt;AINFT721.MetadataUpdate">
 
 <path fill="none" stroke="#1bc6a6" stroke-width="2" d="M943.3,-517.28C971.78,-520.39 1004.24,-523.93 1033.21,-527.09"/>
 <polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="1032.49,-530.53 1042.81,-528.14 1033.25,-523.57 1032.49,-530.53"/>
-</g><g id="node19" class="node" pointer-events="visible" data-name="AINFTFactory.&lt;Constructor&gt;" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- AINFTFactory.&lt;Constructor&gt; -->
+<g id="node19" class="node" pointer-events="visible" data-name="AINFTFactory.&lt;Constructor&gt;">
 
 <ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="93" cy="-1143" rx="67.55" ry="18"/>
 <text text-anchor="middle" x="93" y="-1138.8" font-family="Times,serif" font-size="14.00">&lt;Constructor&gt;</text>
-</g><g id="edge29" class="edge" data-name="AINPayment.withdrawAll-&gt;AINPayment.owner" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
-
-<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M672.46,-852.99C715.61,-862.61 777.8,-876.48 819.8,-885.84"/>
-<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="818.93,-889.24 829.45,-888 820.45,-882.4 818.93,-889.24"/>
-</g><g id="node20" class="node" pointer-events="visible" data-name="AINFTFactory.cloneERC721" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- AINFTFactory.cloneERC721 -->
+<g id="node20" class="node" pointer-events="visible" data-name="AINFTFactory.cloneERC721">
 
 <ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="93" cy="-1089" rx="65.43" ry="18"/>
 <text text-anchor="middle" x="93" y="-1084.8" font-family="Times,serif" font-size="14.00">cloneERC721</text>
-</g><g id="node22" class="node" pointer-events="visible" data-name="AINFTFactory.address" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- AINFTFactory.address -->
+<g id="node22" class="node" pointer-events="visible" data-name="AINFTFactory.address">
 
 <ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="350.6" cy="-1062" rx="53.91" ry="18"/>
 <text text-anchor="middle" x="350.6" y="-1057.8" font-family="Times,serif" font-size="14.00">AINFT721</text>
-</g><g id="node21" class="node" pointer-events="visible" data-name="AINFTFactory.createAINFT721" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- AINFTFactory.cloneERC721&#45;&gt;AINFTFactory.address -->
+<g id="edge19" class="edge" data-name="AINFTFactory.cloneERC721-&gt;AINFTFactory.address">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M155.87,-1082.46C194.98,-1078.33 245.43,-1073 285.05,-1068.82"/>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="285.18,-1072.32 294.76,-1067.79 284.44,-1065.36 285.18,-1072.32"/>
+</g>
+<!-- AINFTFactory.createAINFT721 -->
+<g id="node21" class="node" pointer-events="visible" data-name="AINFTFactory.createAINFT721">
 
 <ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="93" cy="-1035" rx="77" ry="18"/>
 <text text-anchor="middle" x="93" y="-1030.8" font-family="Times,serif" font-size="14.00">createAINFT721</text>
-</g><g id="edge20" class="edge" data-name="AINFTFactory.createAINFT721-&gt;AINFTFactory.address" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- AINFTFactory.createAINFT721&#45;&gt;AINFTFactory.address -->
+<g id="edge20" class="edge" data-name="AINFTFactory.createAINFT721-&gt;AINFTFactory.address">
 
 <path fill="none" stroke="#1bc6a6" stroke-width="2" d="M165.2,-1042.52C202.85,-1046.5 248.73,-1051.35 285.3,-1055.21"/>
 <polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="284.5,-1058.64 294.81,-1056.21 285.23,-1051.68 284.5,-1058.64"/>
-</g><g id="node23" class="node" pointer-events="visible" data-name="AINPayment.&lt;Constructor&gt;" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- AINPayment.&lt;Constructor&gt; -->
+<g id="node23" class="node" pointer-events="visible" data-name="AINPayment.&lt;Constructor&gt;">
 
 <ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="350.6" cy="-950" rx="67.55" ry="18"/>
 <text text-anchor="middle" x="350.6" y="-945.8" font-family="Times,serif" font-size="14.00">&lt;Constructor&gt;</text>
-</g><g id="node24" class="node" pointer-events="visible" data-name="AINPayment._pay" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- AINPayment._pay -->
+<g id="node24" class="node" pointer-events="visible" data-name="AINPayment._pay">
 
 <ellipse fill="#f2c383" stroke="#f2c383" stroke-width="3" cx="622.16" cy="-788" rx="29.62" ry="18"/>
 <text text-anchor="middle" x="622.16" y="-783.8" font-family="Times,serif" font-size="14.00">_pay</text>
-</g><g id="node31" class="node" pointer-events="visible" data-name="IERC20.transferFrom" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- IERC20.transferFrom -->
+<g id="node31" class="node" pointer-events="visible" data-name="IERC20.transferFrom">
 
 <ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="866.35" cy="-649" rx="61.41" ry="18"/>
 <text text-anchor="middle" x="866.35" y="-644.8" font-family="Times,serif" font-size="14.00">transferFrom</text>
-</g><g id="edge21" class="edge" data-name="AINPayment._pay-&gt;IERC20.transferFrom" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- AINPayment._pay&#45;&gt;IERC20.transferFrom -->
+<g id="edge21" class="edge" data-name="AINPayment._pay-&gt;IERC20.transferFrom">
 
 <path fill="none" stroke="white" stroke-width="2" d="M637.15,-771.06C658.59,-746.25 702.08,-700.34 749.12,-676 763.5,-668.56 779.92,-663.15 795.81,-659.22"/>
 <polygon fill="white" stroke="white" stroke-width="2" points="796.45,-662.66 805.43,-657.04 794.9,-655.84 796.45,-662.66"/>
-</g><g id="node25" class="node" pointer-events="visible" data-name="AINPayment.executeUpdate" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- AINPayment.executeUpdate -->
+<g id="node25" class="node" pointer-events="visible" data-name="AINPayment.executeUpdate">
 
 <ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="350.6" cy="-842" rx="68.32" ry="18"/>
 <text text-anchor="middle" x="350.6" y="-837.8" font-family="Times,serif" font-size="14.00">executeUpdate</text>
-</g><g id="edge22" class="edge" data-name="AINPayment.executeUpdate-&gt;AINPayment._pay" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- AINPayment.executeUpdate&#45;&gt;AINFT721.updateTokenURI -->
+<g id="edge23" class="edge" data-name="AINPayment.executeUpdate-&gt;AINFT721.updateTokenURI">
+
+<path fill="none" stroke="white" stroke-width="2" d="M420.08,-840.14C445.36,-836.74 473.19,-829.55 495.19,-815 519.25,-799.09 510.69,-781.29 531.19,-761 613.37,-679.69 648.41,-675.76 749.12,-619 770.33,-607.05 794.48,-595.15 815.25,-585.42"/>
+<polygon fill="white" stroke="white" stroke-width="2" points="816.69,-588.61 824.29,-581.23 813.75,-582.26 816.69,-588.61"/>
+</g>
+<!-- AINPayment.executeUpdate&#45;&gt;AINPayment._pay -->
+<g id="edge22" class="edge" data-name="AINPayment.executeUpdate-&gt;AINPayment._pay">
 
 <path fill="none" stroke="#1bc6a6" stroke-width="2" d="M409.3,-831.49C435.54,-826.63 466.97,-820.68 495.19,-815 523.82,-809.24 556,-802.34 580.67,-796.95"/>
 <polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="581.21,-800.42 590.23,-794.86 579.71,-793.58 581.21,-800.42"/>
-</g><g id="node26" class="node" pointer-events="visible" data-name="AINPayment.executeRollback" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- AINPayment.executeRollback -->
+<g id="node26" class="node" pointer-events="visible" data-name="AINPayment.executeRollback">
 
 <ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="350.6" cy="-788" rx="75.27" ry="18"/>
 <text text-anchor="middle" x="350.6" y="-783.8" font-family="Times,serif" font-size="14.00">executeRollback</text>
-</g><g id="edge24" class="edge" data-name="AINPayment.executeRollback-&gt;AINPayment._pay" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- AINPayment.executeRollback&#45;&gt;AINFT721.rollbackTokenURI -->
+<g id="edge25" class="edge" data-name="AINPayment.executeRollback-&gt;AINFT721.rollbackTokenURI">
+
+<path fill="none" stroke="white" stroke-width="2" d="M370.15,-769.26C401.32,-738.53 467.08,-676.76 531.19,-636 621.13,-578.83 648.28,-570.45 749.12,-536 761.68,-531.71 775.22,-527.88 788.48,-524.54"/>
+<polygon fill="white" stroke="white" stroke-width="2" points="789.22,-527.96 798.12,-522.21 787.57,-521.16 789.22,-527.96"/>
+</g>
+<!-- AINPayment.executeRollback&#45;&gt;AINPayment._pay -->
+<g id="edge24" class="edge" data-name="AINPayment.executeRollback-&gt;AINPayment._pay">
 
 <path fill="none" stroke="#1bc6a6" stroke-width="2" d="M427.04,-788C475.88,-788 537.7,-788 578.29,-788"/>
 <polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="578.16,-791.5 588.16,-788 578.16,-784.5 578.16,-791.5"/>
-</g><g id="node27" class="node" pointer-events="visible" data-name="AINPayment.withdraw" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- AINPayment.withdraw -->
+<g id="node27" class="node" pointer-events="visible" data-name="AINPayment.withdraw">
 
 <ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="622.16" cy="-896" rx="47.52" ry="18"/>
 <text text-anchor="middle" x="622.16" y="-891.8" font-family="Times,serif" font-size="14.00">withdraw</text>
-</g><g id="node30" class="node" pointer-events="visible" data-name="AINPayment.owner" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- AINPayment.owner -->
+<g id="node30" class="node" pointer-events="visible" data-name="AINPayment.owner">
 
-<ellipse fill="rgb(242, 195, 131)" stroke="rgb(242, 195, 131)" stroke-width="3" cx="866.35" cy="-896" rx="35.34" ry="18"/>
+<ellipse fill="#f2c383" stroke="#f2c383" stroke-width="3" cx="866.35" cy="-896" rx="35.34" ry="18"/>
 <text text-anchor="middle" x="866.35" y="-891.8" font-family="Times,serif" font-size="14.00">owner</text>
-</g><g id="node32" class="node" pointer-events="visible" data-name="IERC20.transfer" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- AINPayment.withdraw&#45;&gt;AINPayment.owner -->
+<g id="edge26" class="edge" data-name="AINPayment.withdraw-&gt;AINPayment.owner">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M669,-890.58C711.66,-888.83 774.96,-888.81 818.08,-890.52"/>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="817.87,-894.01 828.02,-890.98 818.19,-887.02 817.87,-894.01"/>
+</g>
+<!-- AINPayment.withdraw&#45;&gt;AINPayment.owner -->
+<g id="edge28" class="edge" data-name="AINPayment.withdraw-&gt;AINPayment.owner">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M669,-901.42C711.66,-903.17 774.96,-903.19 818.08,-901.48" style=""/>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="818.19,-904.98 828.02,-901.02 817.87,-897.99 818.19,-904.98"/>
+</g>
+<!-- IERC20.transfer -->
+<g id="node32" class="node" pointer-events="visible" data-name="IERC20.transfer">
 
 <ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="866.35" cy="-703" rx="40.55" ry="18"/>
 <text text-anchor="middle" x="866.35" y="-698.8" font-family="Times,serif" font-size="14.00">transfer</text>
-</g><g id="edge27" class="edge" data-name="AINPayment.withdraw-&gt;IERC20.transfer" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- AINPayment.withdraw&#45;&gt;IERC20.transfer -->
+<g id="edge27" class="edge" data-name="AINPayment.withdraw-&gt;IERC20.transfer">
 
 <path fill="none" stroke="white" stroke-width="2" d="M669.21,-890.96C684.86,-887.15 701.35,-880.52 713.12,-869 750.2,-832.73 714.88,-796.95 749.12,-758 766.87,-737.82 793.62,-724.46 816.99,-715.96"/>
 <polygon fill="white" stroke="white" stroke-width="2" points="817.97,-719.33 826.32,-712.81 815.73,-712.7 817.97,-719.33"/>
-</g><g id="node28" class="node" pointer-events="visible" data-name="AINPayment.withdrawAll" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- AINPayment.withdrawAll -->
+<g id="node28" class="node" pointer-events="visible" data-name="AINPayment.withdrawAll">
 
-<ellipse fill="rgb(255, 151, 151)" stroke="rgb(255, 151, 151)" stroke-width="3" cx="622.16" cy="-842" rx="59.7" ry="18"/>
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="622.16" cy="-842" rx="59.7" ry="18"/>
 <text text-anchor="middle" x="622.16" y="-837.8" font-family="Times,serif" font-size="14.00">withdrawAll</text>
-</g><g id="edge30" class="edge" data-name="AINPayment.withdrawAll-&gt;IERC20.transfer" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- AINPayment.withdrawAll&#45;&gt;AINPayment.owner -->
+<g id="edge29" class="edge" data-name="AINPayment.withdrawAll-&gt;AINPayment.owner">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M672.46,-852.99C715.61,-862.61 777.8,-876.48 819.8,-885.84"/>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="818.93,-889.24 829.45,-888 820.45,-882.4 818.93,-889.24"/>
+</g>
+<!-- AINPayment.withdrawAll&#45;&gt;IERC20.transfer -->
+<g id="edge30" class="edge" data-name="AINPayment.withdrawAll-&gt;IERC20.transfer">
 
 <path fill="none" stroke="white" stroke-width="2" d="M676.12,-832.89C689.1,-828.9 702.35,-823.19 713.12,-815 736.99,-796.88 726.69,-777.86 749.12,-758 769.31,-740.12 796.33,-726.87 819.23,-717.86"/>
 <polygon fill="white" stroke="white" stroke-width="2" points="820.14,-721.26 828.28,-714.47 817.69,-714.7 820.14,-721.26"/>
-</g><g id="node29" class="node" pointer-events="visible" data-name="AINPayment.destruct" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- AINPayment.destruct -->
+<g id="node29" class="node" pointer-events="visible" data-name="AINPayment.destruct">
 
 <ellipse fill="#ffbdb9" stroke="brown" stroke-width="3" cx="350.6" cy="-896" rx="41.71" ry="18"/>
 <text text-anchor="middle" x="350.6" y="-891.8" font-family="Times,serif" font-size="14.00">destruct</text>
-</g><g id="edge32" class="edge" data-name="AINPayment.destruct-&gt;AINPayment.withdrawAll" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- AINPayment.destruct&#45;&gt;AINPayment.withdrawAll -->
+<g id="edge32" class="edge" data-name="AINPayment.destruct-&gt;AINPayment.withdrawAll">
 
 <path fill="none" stroke="#1bc6a6" stroke-width="2" d="M390.65,-888.93C419.56,-883.63 459.88,-876.1 495.19,-869 515.98,-864.82 538.64,-860.03 558.94,-855.66"/>
 <polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="559.57,-859.11 568.6,-853.57 558.09,-852.27 559.57,-859.11"/>
-</g><g id="node38" class="node" pointer-events="visible" data-name="key" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- AINPayment.destruct&#45;&gt;AINPayment.owner -->
+<g id="edge31" class="edge" data-name="AINPayment.destruct-&gt;AINPayment.owner">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M390.29,-903.53C426.54,-910.17 482.3,-919.35 531.19,-923 611.83,-929.03 632.58,-930.09 713.12,-923 749.34,-919.81 789.85,-912.44 819.97,-906.2"/>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="820.6,-909.65 829.65,-904.15 819.14,-902.8 820.6,-909.65"/>
+</g>
+<!-- User.updateNFT -->
+<g id="node33" class="node" pointer-events="visible" data-name="User.updateNFT">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="93" cy="-842" rx="55.04" ry="18"/>
+<text text-anchor="middle" x="93" y="-837.8" font-family="Times,serif" font-size="14.00">updateNFT</text>
+</g>
+<!-- User.updateNFT&#45;&gt;AINPayment.executeUpdate -->
+<g id="edge1" class="edge" data-name="User.updateNFT-&gt;AINPayment.executeUpdate">
+
+<path fill="none" stroke="white" stroke-width="2" d="M149.46,-842C184.15,-842 229.45,-842 268.17,-842"/>
+<polygon fill="white" stroke="white" stroke-width="2" points="268,-845.5 278,-842 268,-838.5 268,-845.5"/>
+</g>
+<!-- User.rollbackNFT -->
+<g id="node34" class="node" pointer-events="visible" data-name="User.rollbackNFT">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="93" cy="-788" rx="60.84" ry="18"/>
+<text text-anchor="middle" x="93" y="-783.8" font-family="Times,serif" font-size="14.00">rollbackNFT</text>
+</g>
+<!-- User.rollbackNFT&#45;&gt;AINPayment.executeRollback -->
+<g id="edge2" class="edge" data-name="User.rollbackNFT-&gt;AINPayment.executeRollback">
+
+<path fill="none" stroke="white" stroke-width="2" d="M155.22,-788C187.05,-788 226.53,-788 261.57,-788"/>
+<polygon fill="white" stroke="white" stroke-width="2" points="261.23,-791.5 271.23,-788 261.23,-784.5 261.23,-791.5"/>
+</g>
+<!-- User.viewNFT -->
+<g id="node35" class="node" pointer-events="visible" data-name="User.viewNFT">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="93" cy="-734" rx="48.1" ry="18"/>
+<text text-anchor="middle" x="93" y="-729.8" font-family="Times,serif" font-size="14.00">viewNFT</text>
+</g>
+<!-- User.viewNFT&#45;&gt;AINFT721.tokenURI -->
+<g id="edge3" class="edge" data-name="User.viewNFT-&gt;AINFT721.tokenURI">
+
+<path fill="none" stroke="white" stroke-width="2" d="M94.07,-714.54C95.39,-659.13 107.27,-499.48 198,-421 222.5,-399.81 257.78,-392.63 288.14,-390.94"/>
+<polygon fill="white" stroke="white" stroke-width="2" points="287.89,-394.45 297.77,-390.63 287.67,-387.46 287.89,-394.45"/>
+</g>
+<!-- key -->
+<g id="node38" class="node" pointer-events="visible" data-name="key">
 
 <polygon fill="#edad56" stroke="none" stroke-width="3" points="158,-1298 28,-1298 28,-1210 158,-1210 158,-1298"/>
 <text text-anchor="start" x="77.64" y="-1279.4" font-family="Times,serif" font-size="14.00">Internal Call</text>
 <text text-anchor="start" x="73.75" y="-1259.4" font-family="Times,serif" font-size="14.00">External Call</text>
 <text text-anchor="start" x="51.2" y="-1239.4" font-family="Times,serif" font-size="14.00">Defined Contract</text>
 <text text-anchor="start" x="37.6" y="-1219.4" font-family="Times,serif" font-size="14.00">Undefined Contract</text>
-</g><g id="node39" class="node" pointer-events="visible" data-name="key2" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- key2 -->
+<g id="node39" class="node" pointer-events="visible" data-name="key2">
 
 <polygon fill="#edad56" stroke="none" stroke-width="3" points="377.6,-1298 323.6,-1298 323.6,-1210 377.6,-1210 377.6,-1298"/>
 <text text-anchor="start" x="340.6" y="-1279.4" font-family="Times,serif" font-size="14.00">   </text>
@@ -459,20 +466,13 @@
 <polygon fill="#445773" stroke="none" points="338.6,-1234 338.6,-1254 363.6,-1254 363.6,-1234 338.6,-1234"/>
 <text text-anchor="start" x="340.6" y="-1239.4" font-family="Times,serif" font-size="14.00">   </text>
 <polygon fill="none" stroke="#e8726d" points="340.6,-1216 340.6,-1232 361.6,-1232 361.6,-1216 340.6,-1216"/>
-</g><g id="edge1" class="edge" data-name="User.updateNFT-&gt;AINPayment.executeUpdate" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
+</g>
+<!-- key&#45;&gt;key2 -->
+<g id="edge33" class="edge" data-name="key-&gt;key2">
 
-<path fill="none" stroke="rgb(255, 255, 255)" stroke-width="2" d="M149.46,-842C184.15,-842 229.45,-842 268.17,-842"/>
-<polygon fill="white" stroke="white" stroke-width="2" points="268,-845.5 278,-842 268,-838.5 268,-845.5"/>
-</g><g id="node34" class="node" pointer-events="visible" data-name="User.rollbackNFT" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
-
-<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="93" cy="-788" rx="60.84" ry="18"/>
-<text text-anchor="middle" x="93" y="-783.8" font-family="Times,serif" font-size="14.00">rollbackNFT</text>
-</g><g id="edge2" class="edge" data-name="User.rollbackNFT-&gt;AINPayment.executeRollback" data-comment="AINFT721.tokenURICurrentVersion-&gt;AINFT721._requireMinted">
-
-<path fill="none" stroke="rgb(255, 255, 255)" stroke-width="2" d="M155.22,-788C187.05,-788 226.53,-788 261.57,-788"/>
-<polygon fill="white" stroke="white" stroke-width="2" points="261.23,-791.5 271.23,-788 261.23,-784.5 261.23,-791.5"/>
-</g><!-- key&#45;&gt;key2 -->
-
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M151,-1284C229.56,-1284 252.3,-1284 324.98,-1284"/>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="324.57,-1287.5 334.57,-1284 324.57,-1280.5 324.57,-1287.5"/>
+</g>
 <!-- key&#45;&gt;key2 -->
 <g id="edge34" class="edge" data-name="key-&gt;key2">
 
