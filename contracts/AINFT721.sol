@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
@@ -9,19 +9,17 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/interfaces/IERC721.sol";
 
-import "./interfaces/IERC4906.sol";
-import "./interfaces/IAINFT.sol";
+import "./interfaces/IAINFT721.sol";
 
 /**
  *@dev AINFT721 contract
  */
 contract AINFT721 is
-    ERC721Enumerable,
+    ERC721,
     Pausable,
     AccessControl,
     ERC721Burnable,
-    IERC4906,
-    IAINFT
+    IAINFT721
 {
     using Strings for uint256;
     using Address for address;
@@ -35,6 +33,7 @@ contract AINFT721 is
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     string private baseURI;
+    uint256 public totalMinted = 0;
     mapping(bytes32 => MetadataContainer) private _metadataStorage; // keccak256(bytes(tokenId, <DELIMETER>, version)) => MetadataContainer
     mapping(uint256 => uint256) private _tokenURICurrentVersion; // tokenId => tokenURIVersion
 
@@ -61,6 +60,10 @@ contract AINFT721 is
         require(!IS_CLONED, "Only created contract can execute.");
         _;
     }
+
+    function isCloned() public view returns (bool) {
+        return IS_CLONED;
+    }
     
     function mintFromOriginInstance(
         uint256 tokenId_
@@ -68,6 +71,7 @@ contract AINFT721 is
         require(!_exists(tokenId_), "The tokenId_ is already minted or cloned");
         require(_msgSender() == ORIGIN_NFT.ownerOf(tokenId_), "The sender should be the holder of origin NFT.");
         _safeMint(_msgSender(), tokenId_);
+        totalMinted += 1;
     }
     
     function mintBulkFromOriginInstance(
@@ -79,6 +83,7 @@ contract AINFT721 is
             require(recipients_[i] == ORIGIN_NFT.ownerOf(tokenIds_[i]), "The sender should be the holder of origin NFT.");
             _safeMint(recipients_[i], tokenIds_[i]);
         }
+        totalMinted += tokenIds_.length;
     }
 
     function setPaymentContract(address paymentPlugin_) public onlyRole(DEFAULT_ADMIN_ROLE) {
@@ -88,7 +93,7 @@ contract AINFT721 is
     }
 
     /**
-     * @dev See {IERC4906}.
+     * @dev See {IAINFT721}.
      */
     function supportsInterface(
         bytes4 interfaceId
@@ -97,15 +102,14 @@ contract AINFT721 is
         view
         override(
             AccessControl,
-            ERC721Enumerable,
             ERC721,
             IERC165
         )
         returns (bool)
     {
-        // TODO(jakepyo): To distinguish the contract is AINFT, we should add our own interface.
-        // IERC4906 interface added
-        return interfaceId == bytes4(0x49064906) || super.supportsInterface(interfaceId);
+        return 
+            interfaceId == type(IAINFT721).interfaceId ||
+            super.supportsInterface(interfaceId);
     }
 
     function pause() public onlyRole(PAUSER_ROLE) {
@@ -124,20 +128,7 @@ contract AINFT721 is
         NotCloned
     {
         _safeMint(to, tokenId);
-    }
-
-    function _beforeTokenTransfer(
-        address from,
-        address to,
-        uint256 firstTokenId,
-        uint256 batchSize
-    )
-        internal
-        override(ERC721, ERC721Enumerable)
-        whenNotPaused
-    {
-        //TODO(jakepyo): future work: need to check things if ERC721Enumerable is removed.
-        super._beforeTokenTransfer(from, to, firstTokenId, batchSize);
+        totalMinted += 1;
     }
 
     /**
@@ -233,7 +224,8 @@ contract AINFT721 is
         );
 
         baseURI = newBaseURI;
-        //TODO(jakepyo): emit BatchMetadataUpdate(start, end). Consider after updateTokenURI() calls.
+        if (totalMinted == 1) emit MetadataUpdate(0);
+        else if (totalMinted > 1) emit BatchMetadataUpdate(0, totalMinted - 1);
         return true;
     }
 
@@ -246,9 +238,9 @@ contract AINFT721 is
     ) external returns (bool) {
         require(
             (isApprovedOrOwner(tx.origin, tokenId) ||
-             (PAYMENT_PLUGIN == _msgSender() && PAYMENT_PLUGIN != address(0))
-            ),
-            "AINFT721::updateTokenURI() - only payment contract can call this funciton."
+             PAYMENT_PLUGIN == _msgSender() ||
+             PAYMENT_PLUGIN == address(0)),
+            "AINFT721::updateTokenURI() - only payment contract can call this funciton. Or, you can call this function directly if PAYMENT_PLUGIN is unset."
         );
         _requireMinted(tokenId);
 
@@ -270,8 +262,9 @@ contract AINFT721 is
     function rollbackTokenURI(uint256 tokenId) external returns (bool) {
         require(
             (isApprovedOrOwner(tx.origin, tokenId) ||
-             PAYMENT_PLUGIN == _msgSender()),
-            "AINFT721::rollbackTokenURI() - only payment contract can call this function."
+             PAYMENT_PLUGIN == _msgSender() ||
+             PAYMENT_PLUGIN == address(0)),
+            "AINFT721::rollbackTokenURI() - only payment contract can call this function. Or, you can call this function directly if PAYMENT_PLUGIN is unset."
         );
         _requireMinted(tokenId);
 

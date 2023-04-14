@@ -15,7 +15,7 @@ contract AINPayment is Ownable, ReentrancyGuard {
     uint256[2] public _price; // [update_price, rollback_price]
 
     constructor(address ainft, address ain) {
-        // require(ain == 0x3A810ff7211b40c4fA76205a14efe161615d0385, "AINPayment: only supports AIN ERC20");
+        // require(ain == <DEPLOYED AIN ERC20 ADDRESS>, "AINPayment: only supports AIN ERC20");
         _ain = IERC20(ain);
         _ainft = IAINFT(ainft);
         _price = [0, 0];
@@ -26,7 +26,6 @@ contract AINPayment is Ownable, ReentrancyGuard {
         _price[0] = price[0];
         _price[1] = price[1];
     }
-
 
     /**
      * @dev Pay AIN to AINPayment contract
