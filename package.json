@@ -10,7 +10,7 @@
     "test": "hardhat test",
     "test:integration": "hardhat test test/IntegrationTest.ts",
     "coverage": "hardhat coverage",
-    "docgen": "solidity-docgen -i contracts -o docs",
+    "docgen": "hardhat docgen",
     "deploy:hardhat": "hardhat run --network hardhat scripts/deploy.ts",
     "deploy:mainnet": "hardhat run --network mainnet scripts/deploy.ts"  
   },
