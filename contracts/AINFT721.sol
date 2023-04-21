@@ -29,7 +29,7 @@ contract AINFT721 is
     }
     bool public immutable IS_CLONED;
     IERC721 public immutable ORIGIN_NFT;
-    address public PAYMENT_PLUGIN;
+    address public PAYMENT_ADDRESS;
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     string private baseURI;
@@ -40,9 +40,9 @@ contract AINFT721 is
     constructor(string memory name_, string memory symbol_, bool isCloned_, address originNFT_) ERC721(name_, symbol_) {
         //FIXME(jakepyo): If AINFT721 is created/cloned by AINFTFactory, tx.origin should be set corresponding roles.
         // However under the discussion, if AINFTFactory should be removed, tx.origin should be replaced with msg.sender. 
-        _grantRole(DEFAULT_ADMIN_ROLE, tx.origin);
-        _grantRole(PAUSER_ROLE, tx.origin);
-        _grantRole(MINTER_ROLE, tx.origin);
+        _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
+        _grantRole(PAUSER_ROLE, _msgSender());
+        _grantRole(MINTER_ROLE, _msgSender());
         ORIGIN_NFT = IERC721(originNFT_);
         IS_CLONED = isCloned_;
         require((address(ORIGIN_NFT) == address(0) && !IS_CLONED) ||
@@ -88,8 +88,7 @@ contract AINFT721 is
 
     function setPaymentContract(address paymentPlugin_) public onlyRole(DEFAULT_ADMIN_ROLE) {
         require(_msgSender() == tx.origin && _msgSender() != address(0), "Only EOA can set payment contract.");
-        require(paymentPlugin_.isContract(), "The paymentPlugin_ should be a contract address.");
-        PAYMENT_PLUGIN = paymentPlugin_;
+        PAYMENT_ADDRESS = paymentPlugin_;
     }
 
     /**
@@ -237,10 +236,10 @@ contract AINFT721 is
         string memory newTokenURI
     ) external returns (bool) {
         require(
-            (isApprovedOrOwner(tx.origin, tokenId) ||
-             PAYMENT_PLUGIN == _msgSender() ||
-             PAYMENT_PLUGIN == address(0)),
-            "AINFT721::updateTokenURI() - only payment contract can call this funciton. Or, you can call this function directly if PAYMENT_PLUGIN is unset."
+            (isApprovedOrOwner(_msgSender(), tokenId) ||
+             PAYMENT_ADDRESS == _msgSender() ||
+             PAYMENT_ADDRESS == address(0)),
+            "AINFT721::updateTokenURI() - only payment contract can call this funciton. Or, you can call this function directly if PAYMENT_ADDRESS is unset."
         );
         _requireMinted(tokenId);
 
@@ -261,10 +260,10 @@ contract AINFT721 is
      */
     function rollbackTokenURI(uint256 tokenId) external returns (bool) {
         require(
-            (isApprovedOrOwner(tx.origin, tokenId) ||
-             PAYMENT_PLUGIN == _msgSender() ||
-             PAYMENT_PLUGIN == address(0)),
-            "AINFT721::rollbackTokenURI() - only payment contract can call this function. Or, you can call this function directly if PAYMENT_PLUGIN is unset."
+            (isApprovedOrOwner(_msgSender(), tokenId) ||
+             PAYMENT_ADDRESS == _msgSender() ||
+             PAYMENT_ADDRESS == address(0)),
+            "AINFT721::rollbackTokenURI() - only payment contract can call this function. Or, you can call this function directly if PAYMENT_ADDRESS is unset."
         );
         _requireMinted(tokenId);
 
