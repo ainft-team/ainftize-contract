@@ -23,3 +23,16 @@ interface IAINFT is IERC4906 {
     ///@dev delete the current tokenURI and rollback tokenURI to previous version. If the tokenId hasn't updated before, it reverts
     function rollbackTokenURI(uint256 tokenId) external returns (bool);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
